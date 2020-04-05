@@ -1,0 +1,7 @@
+DataGeneration/Extract/FRS/CSV/*.pdf
+DataGeneration/Extract/FRS/CSV/*.CSV
+DataGeneration/Extract/RCRAInfo/CSV/*.csv
+DataGeneration/Extract/TRI/CSV/*.csv
+DataGeneration/Transform/Waste_Tracking/CSV/Off_site_tracking/*.csv
+DataGeneration/Transform/Waste_Tracking/CSV/On_site_tracking/*.csv
+DataGeneration/Transform/TRI/2018/*.csv
