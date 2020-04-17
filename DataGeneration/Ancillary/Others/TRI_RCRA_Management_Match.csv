@@ -13,7 +13,7 @@ Transfer to waste broker for waste treatment,Biological treatment,Industrial was
 Transfer to waste broker for waste treatment,Chemical oxidation,Industrial wastewater treatment,Treatment
 Transfer to waste broker for waste treatment,Chemical reduction with or without precipitation,Industrial wastewater treatment,Treatment
 Transfer to waste broker for waste treatment,Chemical treatment (reduction / destruction / oxidation / precipitation),Industrial wastewater treatment,Treatment
-Transfer to waste broker for waste treatment,"Combination of chemical, biological and/or physical treatment",Industrial wastewater treatment,Treatment
+"Transfer to waste broker for waste treatment,""Combination of chemical, biological and/or physical treatment"",Industrial wastewater treatment,Treatment"
 Transfer to waste broker for waste treatment,Cyanide destruction with or without precipitation,Industrial wastewater treatment,Treatment
 Transfer to waste broker for waste treatment,Evaporation,Industrial wastewater treatment,Treatment
 Transfer to waste broker for waste treatment,Incineration; thermal destruction other than use as a fuel,Incinerators,Treatment
@@ -35,7 +35,7 @@ Wastewater treatment (excluding POTWS) - non-metals,Biological treatment,Industr
 Wastewater treatment (excluding POTWS) - non-metals,Chemical oxidation,Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Chemical reduction with or without precipitation,Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Chemical treatment (reduction / destruction / oxidation / precipitation),Industrial wastewater treatment,Treatment
-Wastewater treatment (excluding POTWS) - non-metals,"Combination of chemical, biological and/or physical treatment",Industrial wastewater treatment,Treatment
+"Wastewater treatment (excluding POTWS) - non-metals,""Combination of chemical, biological and/or physical treatment"",Industrial wastewater treatment,Treatment"
 Wastewater treatment (excluding POTWS) - non-metals,Cyanide destruction with or without precipitation,Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Evaporation,Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Neutralization only,Industrial wastewater treatment,Treatment
@@ -44,27 +44,27 @@ Wastewater treatment (excluding POTWS) - non-metals,Phase separation,Industrial 
 Wastewater treatment (excluding POTWS) - non-metals,Physical treatment only (adsorption / absorption / separation / stripping / dewatering),Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Settling or clarification,Industrial wastewater treatment,Treatment
 Wastewater treatment (excluding POTWS) - non-metals,Wet air oxidation,Industrial wastewater treatment,Treatment
-Acid regeneration,"Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc.",Recycling,Recycling
-Metals recovery,"Metals recovery including retorting, smelting, chemical, etc.",Recycling,Recycling
-Other reuse or recovery,"Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc.",Recycling,Recycling
-Solvents/organics recovery,"Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc.",Recycling,Recycling
+"Acid regeneration,""Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc."",Recycling,Recycling"
+"Metals recovery,""Metals recovery including retorting, smelting, chemical, etc."",Recycling,Recycling"
+"Other reuse or recovery,""Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc."",Recycling,Recycling"
+"Solvents/organics recovery,""Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc."",Recycling,Recycling"
 Solvents/organics recovery,Solvents recovery,Recycling,Recycling
-Transfer to waste broker for recycling,"Metals recovery including retorting, smelting, chemical, etc.",Recycling,Recycling
-Transfer to waste broker for recycling,"Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc.",Recycling,Recycling
+"Transfer to waste broker for recycling,""Metals recovery including retorting, smelting, chemical, etc."",Recycling,Recycling"
+"Transfer to waste broker for recycling,""Other recovery or reclamation for reuse including acid regeneration, organics recovery, etc."",Recycling,Recycling"
 Transfer to waste broker for recycling,Solvents recovery,Recycling,Recycling
 Energy recovery,Energy recovery at this site,Energy recovery,Energy recovery
 Transfer to waste broker for energy recovery,Energy recovery at this site,Energy recovery,Energy recovery
 Transfer to waste broker for energy recovery,Fuel blending prior to energy recovery at another site (waste generated on-site or received from off-site),Energy recovery,Energy recovery
 Disposal - unknown,Other Disposal,Other disposal,Disposal
-Land treatment,Land treatment or application (with any prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
-Landfills/disposal surface impoundment,Landfill  (with prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
-Landfills/disposal surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),"Landfill (municipal, hazardous or other land disposal)",Disposal
-Other land disposal,Other Disposal,"Landfill (municipal, hazardous or other land disposal)",Disposal
-Other landfills,Landfill  (with prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
-Other off-site management,Other Disposal,Other Disposal,Disposal
-Other surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),"Landfill (municipal, hazardous or other land disposal)",Disposal
-RCRA subtitle c landfills,Landfill  (with prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
-RCRA subtitle c surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),"Landfill (municipal, hazardous or other land disposal)",Disposal
+"Land treatment,Land treatment or application (with any prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"Landfills/disposal surface impoundment,Landfill  (with prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"Landfills/disposal surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"Other land disposal,Other Disposal,""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"Other landfills,Landfill  (with prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+Other off-site management,Other Disposal,Other disposal,Disposal
+"Other surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"RCRA subtitle c landfills,Landfill  (with prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"RCRA subtitle c surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
 Solidification/stabilization,Macro-encapsulation prior to disposal at another site,Other disposal,Disposal
 Solidification/stabilization,Sludge treatment and/or dewatering,Other disposal,Disposal
 Solidification/stabilization,Stabilization or chemical fixation prior to disposal at another site,Other disposal,Disposal
@@ -74,12 +74,12 @@ Solidification/stabilization (metals),Sludge treatment and/or dewatering,Other d
 Solidification/stabilization (metals),Stabilization or chemical fixation prior to disposal at another site,Other disposal,Disposal
 Solidification/stabilization (metals),Stabilization prior to land disposal at another site (encapsulation / stabilization / fixation),Other disposal,Disposal
 Storage only,Other Disposal,Other disposal,Disposal
-Surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),"Landfill (municipal, hazardous or other land disposal)",Disposal
+"Surface impoundment,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
 Transfer to waste broker for disposal,Deepwell or underground injection (with or without treatment),Underground injection,Disposal
-Transfer to waste broker for disposal,Land treatment or application (with any prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
-Transfer to waste broker for disposal,Landfill  (with prior treatment and/or stabilization),"Landfill (municipal, hazardous or other land disposal)",Disposal
+"Transfer to waste broker for disposal,Land treatment or application (with any prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
+"Transfer to waste broker for disposal,Landfill  (with prior treatment and/or stabilization),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
 Transfer to waste broker for disposal,Other Disposal,Other disposal,Disposal
-Transfer to waste broker for disposal,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),"Landfill (municipal, hazardous or other land disposal)",Disposal
+"Transfer to waste broker for disposal,Surface impoundment that will be closed as a landfill (with prior treatment and/or stabilization meeting LDR treatment standard),""Landfill (municipal, hazardous or other land disposal)"",Disposal"
 Underground injection,Deepwell or underground injection (with or without treatment),Underground injection,Disposal
 Underground injection class i wells,Deepwell or underground injection (with or without treatment),Underground injection,Disposal
 Underground injection class ii-v wells,Deepwell or underground injection (with or without treatment),Underground injection,Disposal
@@ -90,7 +90,7 @@ Wastewater treatment (excluding POTWS) - metals and metal compounds only,Biologi
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Chemical oxidation,Industrial wastewater treatment,Disposal
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Chemical reduction with or without precipitation,Industrial wastewater treatment,Disposal
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Chemical treatment (reduction / destruction / oxidation / precipitation),Industrial wastewater treatment,Disposal
-Wastewater treatment (excluding POTWS) - metals and metal compounds only,"Combination of chemical, biological and/or physical treatment",Industrial wastewater treatment,Disposal
+"Wastewater treatment (excluding POTWS) - metals and metal compounds only,""Combination of chemical, biological and/or physical treatment"",Industrial wastewater treatment,Disposal"
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Cyanide destruction with or without precipitation,Industrial wastewater treatment,Disposal
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Evaporation,Industrial wastewater treatment,Disposal
 Wastewater treatment (excluding POTWS) - metals and metal compounds only,Neutralization only,Industrial wastewater treatment,Disposal
@@ -106,7 +106,7 @@ Wastewater treatment (metals),Biological treatment,Industrial wastewater treatme
 Wastewater treatment (metals),Chemical oxidation,Industrial wastewater treatment,Disposal
 Wastewater treatment (metals),Chemical reduction with or without precipitation,Industrial wastewater treatment,Disposal
 Wastewater treatment (metals),Chemical treatment (reduction / destruction / oxidation / precipitation),Industrial wastewater treatment,Disposal
-Wastewater treatment (metals),"Combination of chemical, biological and/or physical treatment",Industrial wastewater treatment,Disposal
+"Wastewater treatment (metals),""Combination of chemical, biological and/or physical treatment"",Industrial wastewater treatment,Disposal"
 Wastewater treatment (metals),Cyanide destruction with or without precipitation,Industrial wastewater treatment,Disposal
 Wastewater treatment (metals),Evaporation,Industrial wastewater treatment,Disposal
 Wastewater treatment (metals),Neutralization only,Industrial wastewater treatment,Disposal

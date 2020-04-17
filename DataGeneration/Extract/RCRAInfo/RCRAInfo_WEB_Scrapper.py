@@ -10,6 +10,7 @@ import numpy as np
 import zipfile
 from selenium import webdriver
 from selenium.common.exceptions import WebDriverException
+from webdriver_manager.chrome import ChromeDriverManager
 import chardet, codecs
 import re
 import time
@@ -50,9 +51,6 @@ class RCRAInfo_Scrapper:
 
 
     def visit(self):
-        driver_path = input('Enter the path of your chrome driver (check: https://sites.google.com/a/chromium.org/chromedriver/home) :')
-        #print(driver_path)
-        sys.path.append(driver_path)
         regex = re.compile(r'(.+).zip\s?\(\d+.?\d*\s?[a-zA-Z]{2,}\)')
         options = webdriver.ChromeOptions()
         options.add_argument('--disable-notifications')
@@ -68,8 +66,8 @@ class RCRAInfo_Scrapper:
                 'safebrowsing_for_trusted_sources_enabled': False,
                 'safebrowsing.enabled': False}
         options.add_experimental_option('prefs', prefs)
-        browser = webdriver.Chrome(executable_path = driver_path, options = options)
-        browser.maximize_window()
+        browser = webdriver.Chrome(ChromeDriverManager().install(), options = options)
+        #browser.maximize_window()
         browser.set_page_load_timeout(180)
         browser.get(self._url)
         time.sleep(30)
