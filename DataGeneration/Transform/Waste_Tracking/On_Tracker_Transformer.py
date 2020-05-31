@@ -159,8 +159,9 @@ class On_Tracker:
 
     def Facility_information(self):
         df_TRI = pd.DataFrame()
-        for year in range(2001, 2019):
-            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/US_1a_' + str(year) + '.csv'
+        Files = [file for file in os.listdir(self._dir_path + '/../../Extract/TRI/CSV') if 'US_1a' in file]
+        for File in Files:
+            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/{}'.format(File)
             TRI_aux = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
                                  usecols = ['TRIFID', 'FACILITY NAME', 'FACILITY STREET',
                                            'FACILITY CITY',	'FACILITY COUNTY', 'FACILITY STATE',
@@ -168,6 +169,26 @@ class On_Tracker:
             df_TRI = pd.concat([TRI_aux, df_TRI], ignore_index = True, axis = 0)
         df_TRI.drop_duplicates(keep = 'first', inplace = True, subset = ['TRIFID'])
         df_TRI.to_csv(self._dir_path + '/CSV/On_site_tracking/Facility_Information.csv',
+                    sep = ',', index = False)
+
+    def Conditions_of_use(self):
+        df_TRI = pd.DataFrame()
+        Files = [file for file in os.listdir(self._dir_path + '/../../Extract/TRI/CSV') if 'US_1b' in file]
+        for File in Files:
+            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/{}'.format(File)
+            TRI_aux = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
+                             usecols = ['REPORTING YEAR', 'TRIFID', 'CAS NUMBER',
+                                        'PRODUCE THE CHEMICAL', 'IMPORT THE CHEMICAL',
+                                        'ON-SITE USE OF THE CHEMICAL', 'SALE OR DISTRIBUTION OF THE CHEMICAL',
+                                        'AS A BYPRODUCT', 'AS A MANUFACTURED IMPURITY',
+                                        'USED AS A REACTANT', 'ADDED AS A FORMULATION COMPONENT',
+                                        'USED AS AN ARTICLE COMPONENT', 'REPACKAGING',
+                                        'AS A PROCESS IMPURITY', 'RECYCLING',
+                                        'USED AS A CHEMICAL PROCESSING AID',
+                                        'USED AS A MANUFACTURING AID', 'ANCILLARY OR OTHER USE'])
+            df_TRI = pd.concat([TRI_aux, df_TRI], ignore_index = True, axis = 0)
+        df_TRI.drop_duplicates(keep = 'first', inplace = True, subset = ['TRIFID'])
+        df_TRI.to_csv(self._dir_path + '/CSV/On_site_tracking/Conditions_of_use_by_facility_and_chemical.csv',
                     sep = ',', index = False)
 
 
@@ -178,7 +199,8 @@ if __name__ == '__main__':
     parser.add_argument('Option',
                         help = 'What do you want to do:\
                         [A]: Organize maximum and releases\
-                        [B]: Facility information', \
+                        [B]: Facility information\
+                        [C]: Condition of use', \
                         type = str)
 
     parser.add_argument('-Y', '--Year',
@@ -199,3 +221,6 @@ if __name__ == '__main__':
     if args.Option == 'B':
         T = On_Tracker()
         T.Facility_information()
+    if args.Option == 'C':
+        T = On_Tracker()
+        T.Conditions_of_use()
