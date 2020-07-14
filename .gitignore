@@ -1,5 +1,15 @@
+<<<<<<< HEAD
 /extract/frs/csv/*.pdf
 /extract/frs/csv/*.CSV
 /extract/rcrainfo/csv/*.csv
 /extract/tri/csv/*.csv
 /transform/tri/2018/*.csv
+=======
+DataGeneration/Extract/FRS/CSV/*.pdf
+DataGeneration/Extract/FRS/CSV/*.CSV
+DataGeneration/Extract/RCRAInfo/CSV/*.csv
+DataGeneration/Extract/TRI/CSV/*.csv
+DataGeneration/Transform/Waste_Tracking/CSV/Off_site_tracking/*.csv
+DataGeneration/Transform/Waste_Tracking/CSV/On_site_tracking/*.csv
+DataGeneration/Transform/TRI/2018/*.csv
+>>>>>>> f5eca282538ff3c15ed902a54b99b9667a2383ab
