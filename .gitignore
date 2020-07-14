@@ -1,0 +1,5 @@
+/extract/frs/csv/*.pdf
+/extract/frs/csv/*.CSV
+/extract/rcrainfo/csv/*.csv
+/extract/tri/csv/*.csv
+/transform/tri/2018/*.csv
