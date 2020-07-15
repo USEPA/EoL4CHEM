@@ -50,4 +50,6 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
   <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Fuzziness_pathways.png width="80%">
 </p>
 
-
+<p align="center">
+  <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/FAHP_pathways.png width="80%">
+</p>
