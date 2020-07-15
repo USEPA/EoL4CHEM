@@ -44,7 +44,7 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
 | WASTE MANAGEMENT UNDER TSCA | Alphanumeric | TOTAL RELEASE FROM RETDF | Float |
 | WASTE MANAGEMENT UNDER EPA WMH | Alphanumeric | RELIABILITY OF TOTAL RELEASE FROM RETDF | Integer |
 
-# Pathways importance
+# Pathways uncertainty
 
 <p align="center">
   <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Fuzziness_pathways.png width="80%">
