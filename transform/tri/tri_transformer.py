@@ -111,7 +111,7 @@ class TRI_EoL:
         TRI = pd.merge(TRI, NAICS, on = 'GENERATOR TRI PRIMARY NAICS CODE',
                         how = 'left')
         # Reading .txt with order for columns
-        Path_txt = self._dir_path + '/../../ancillary/Features_at_EoL.txt'
+        Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI.columns]
         TRI = TRI[columns]
@@ -372,6 +372,15 @@ class TRI_EoL:
         return df_SRS
 
 
+    def _harvesine_formula(self, Lat_1, Long_1, Lat_2, Long_2):
+        Average_earth_radius = 6371
+        phi1, phi2 = math.radians(Lat_1), math.radians(Lat_2)
+        dphi = math.radians(Lat_2 - Lat_1)
+        dlambda= math.radians(Long_2 - Long_1)
+        a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+        return 2*R*math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+
     def generate_dataframe(self):
         regex =  re.compile(r'TRI_File_(\d{1}[a-zA-Z]?)_Columns_for_DQ_Reliability.txt')
         Path_DQ = self._dir_path + '/../../ancillary/tri'
@@ -457,7 +466,7 @@ class TRI_EoL:
         TRI_RCRAInfo_Merged = pd.merge(TRI, SRS_TRI_RCRA, how = 'left', on = 'TRI CHEMICAL ID NUMBER')
         SRS_TRI_Columns = list(SRS_TRI_RCRA.columns)
         # Reading .txt with order for columns
-        Path_txt = self._dir_path + '/../../ancillary/Features_at_EoL.txt'
+        Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI_RCRAInfo_Merged.columns]
         TRI_RCRAInfo_Merged = TRI_RCRAInfo_Merged[Columns].drop_duplicates(keep = 'first')
@@ -585,7 +594,7 @@ class TRI_EoL:
         TRI_RCRAInfo_TRI.loc[idx, 'RECEIVER LONGITUDE'] = TRI_RCRAInfo_TRI.loc[idx, 'LONGITUDE']
         TRI_RCRAInfo_TRI.drop(columns = ['LONGITUDE', 'LATITUDE'], inplace = True)
         # Reading .txt with order for columns
-        Path_txt = self._dir_path + '/../../ancillary/Features_at_EoL.txt'
+        Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI_RCRAInfo_TRI.columns]
         # Saving
@@ -610,7 +619,7 @@ class TRI_EoL:
                          right_on = 'ID') \
                          .drop_duplicates(keep = 'first')
         # Reading .txt with order for columns
-        Path_txt = self._dir_path + '/../../ancillary/Features_at_EoL.txt'
+        Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI.columns]
         TRI = TRI[Columns]
@@ -620,7 +629,7 @@ class TRI_EoL:
 
     def flows_search(self):
         # Reading .txt with order for columns
-        Path_txt = self._dir_path + '/../../ancillary/Features_at_EoL.txt'
+        Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI_RCRAInfo_TRI.columns]
         # Calling database
