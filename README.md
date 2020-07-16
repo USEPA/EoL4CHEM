@@ -60,6 +60,6 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
 ### Distance between facilities
 
 <p align="center">
-  <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Comparison_distances.png width="80%">
+  <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Comparison_distances.png width="100%">
 </p>
 
