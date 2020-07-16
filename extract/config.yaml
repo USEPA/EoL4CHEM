@@ -10,9 +10,17 @@ web_sites:
       Table_of_tables: "//table[@id='tables']"
   FRS:
     url: https://www3.epa.gov/enviro/html/fii/downloads/state_files/national_combined.zip
-  GPS:
+  GOOGLE_MAPS_COORDINATES:
     url: https://www.google.com/maps
     queries:
       address: //*[@id="searchboxinput"]
       get_button: //*[@id="searchbox-searchbutton"]
-      no_result: //*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]/div[1]/i
+      distance_window: //*[@id="omnibox-directions"]/div/div[2]/div/button/div[1]
+  GOOGLE_MAPS_DIR:
+    url: https://www.google.com/maps/dir/
+    queries:
+      options: //*[@id="pane"]/div/div[1]/div/div/div[2]/button[2]/span[1]
+      km: //*[@id="pane"]/div/div[1]/div/div/div[2]
+      startig_point: //*[@id="sb_ifc50"]/input
+      ending_point: //*[@id="sb_ifc51"]/input
+      distance: //*[@id="section-directions-trip-0"]/div[2]/div[1]/div[1]/div[2]/div

@@ -42,7 +42,7 @@ class On_Tracker:
             return tuple((0.0 if bs[i] and float(v) == 0.0 else float(v)) if re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None for i, v in enumerate(flow))
 
 
-    def Organizing_releases(self):
+    def organizing_releases(self):
         mapping = {'M': 1, 'M1': 1, 'M2': 1, 'E': 2,
                 'E1': 2, 'E2': 2, 'C': 3, 'O': 4,
                 'X': 5, 'N': 5, 'NA': 5}
@@ -61,8 +61,8 @@ class On_Tracker:
         columns_flow_T = list()
         columns_flow_T_DQ = list()
         for File in Files:
-            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/US_' + File + '_' + self.year + '.csv'
-            Path_txt = self._dir_path + '/../../Ancillary/TRI/TRI_File_' + File + '_needed_columns_tracking.txt'
+            Path_csv = self._dir_path + f'/../../extract/tri/csv/US_{File}_{self.year}.csv'
+            Path_txt = self._dir_path + f'/../../ancillary/tri/TRI_File_{File}_needed_columns_tracking.txt'
             df_columns = pd.read_csv(Path_txt, header = None, sep = ',')
             columns_needed =  df_columns.iloc[:, 0].tolist()
             df = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
@@ -122,7 +122,7 @@ class On_Tracker:
         columns_releases_DQ = [col + ' - BASIS OF ESTIMATE' for col in columns_releases]
         df['TOTAL RELEASE'] = df[columns_releases].sum(axis = 1)
         df['TOTAL RELEASE RELIABILITY'] = df.apply(lambda row: self._weight_mean(row[columns_releases_DQ], row[columns_releases]), axis = 1)
-        compartments = ['Fugitive air emissions', 'Stack air emissions', 'On-site surface water', 'On-site soil']
+        compartments = ['Fugitive air emission', 'Stack air emission', 'On-site surface water', 'On-site soil']
         cols_to_conserve = ['CAS NUMBER', 'PRIMARY NAICS CODE', 'REPORTING YEAR',
                             'UNIT OF MEASURE', 'MAXIMUM AMOUNT ON-SITE', 'TRIFID',
                             'TOTAL WASTE', 'TOTAL WASTE RELIABILITY', 'TOTAL RELEASE',
@@ -140,7 +140,7 @@ class On_Tracker:
                                      sort = True)
         del df, df_aux, compartments, cols_to_conserve
         # Calling NAICS file
-        NAICS = pd.read_csv(self._dir_path + '/../../Ancillary/Others/NAICS_Structure.csv',
+        NAICS = pd.read_csv(self._dir_path + '/../../ancillary/others/NAICS_Structure.csv',
                               header = 0,
                               sep = ',',
                               converters = {'NAICS Title':lambda x: x.capitalize()},
@@ -153,29 +153,30 @@ class On_Tracker:
                  'TOTAL WASTE', 'TOTAL WASTE RELIABILITY', 'TOTAL RELEASE', 'TOTAL RELEASE RELIABILITY']
         df_release = df_release[columns]
         print(df_release.loc[pd.isnull(df_release['NAICS Title']), 'PRIMARY NAICS CODE'].unique())
-        df_release.to_csv(self._dir_path + '/CSV/On_site_tracking/TRI_releases_' + self.year + '.csv',
+        df_release.to_csv(self._dir_path + f'/csv/on_site_tracking/TRI_releases_{self.year}.csv',
                            sep = ',', index = False)
 
 
-    def Facility_information(self):
+    def facility_information(self):
         df_TRI = pd.DataFrame()
-        Files = [file for file in os.listdir(self._dir_path + '/../../Extract/TRI/CSV') if 'US_1a' in file]
+        Files = [file for file in os.listdir(self._dir_path + '/../../extract/tri/csv') if 'US_1a' in file]
         for File in Files:
-            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/{}'.format(File)
+            Path_csv = self._dir_path + '/../../extract/tri/csv/{}'.format(File)
             TRI_aux = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
                                  usecols = ['TRIFID', 'FACILITY NAME', 'FACILITY STREET',
                                            'FACILITY CITY',	'FACILITY COUNTY', 'FACILITY STATE',
                                            'FACILITY ZIP CODE'])
             df_TRI = pd.concat([TRI_aux, df_TRI], ignore_index = True, axis = 0)
         df_TRI.drop_duplicates(keep = 'first', inplace = True, subset = ['TRIFID'])
-        df_TRI.to_csv(self._dir_path + '/CSV/On_site_tracking/Facility_Information.csv',
+        df_TRI.to_csv(self._dir_path + '/csv/on_site_tracking/Facility_Information.csv',
                     sep = ',', index = False)
 
-    def Conditions_of_use(self):
+
+    def conditions_of_use(self):
         df_TRI = pd.DataFrame()
-        Files = [file for file in os.listdir(self._dir_path + '/../../Extract/TRI/CSV') if 'US_1b' in file]
+        Files = [file for file in os.listdir(self._dir_path + '/../../extract/tri/csv') if 'US_1b' in file]
         for File in Files:
-            Path_csv = self._dir_path + '/../../Extract/TRI/CSV/{}'.format(File)
+            Path_csv = self._dir_path + '/../../extract/tri/csv/{}'.format(File)
             TRI_aux = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
                              usecols = ['REPORTING YEAR', 'TRIFID', 'CAS NUMBER',
                                         'PRODUCE THE CHEMICAL', 'IMPORT THE CHEMICAL',
@@ -188,7 +189,7 @@ class On_Tracker:
                                         'USED AS A MANUFACTURING AID', 'ANCILLARY OR OTHER USE'])
             df_TRI = pd.concat([TRI_aux, df_TRI], ignore_index = True, axis = 0)
         df_TRI.drop_duplicates(keep = 'first', inplace = True, subset = ['TRIFID'])
-        df_TRI.to_csv(self._dir_path + '/CSV/On_site_tracking/Conditions_of_use_by_facility_and_chemical.csv',
+        df_TRI.to_csv(self._dir_path + '/csv/on_site_tracking/Conditions_of_use_by_facility_and_chemical.csv',
                     sep = ',', index = False)
 
 
@@ -217,10 +218,10 @@ if __name__ == '__main__':
     if args.Option == 'A':
         for TRIyear in TRIyears:
             T = On_Tracker(TRIyear)
-            T.Organizing_releases()
+            T.organizing_releases()
     if args.Option == 'B':
         T = On_Tracker()
-        T.Facility_information()
+        T.facility_information()
     if args.Option == 'C':
         T = On_Tracker()
-        T.Conditions_of_use()
+        T.conditions_of_use()
