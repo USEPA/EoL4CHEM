@@ -13,7 +13,7 @@ import argparse
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../extract/gps')
 from coordinates_scraper import *
-from google_maps_api import *
+from project_osrm import *
 
 class Off_tracker:
 
@@ -321,7 +321,7 @@ class Off_tracker:
                             index = False)
 
 
-    def searching_shortest_distance_from_google_maps(self, API_key):
+    def searching_shortest_distance_from_maps(self):
         Path_csv = self._dir_path + '/csv/off_site_tracking/'
         Files = os.listdir(Path_csv)
         Tracking = pd.DataFrame()
@@ -339,13 +339,13 @@ class Off_tracker:
                                                 'RECEIVER LATITUDE': 'float',
                                                 'RECEIVER LONGITUDE': 'float'})
             Tracking = pd.concat([Tracking, Tracking_year], ignore_index=True, axis=0)
-        Maps = Google_Maps(API_key)
+        Maps = OSRM_API()
         Tracking.drop_duplicates(keep='first', inplace=True)
         # Searching distance
-        Tracking['DISTANCE'] = Tracking.apply(lambda x:
-                                            Maps.google_maps_request_directions(
-                                                tuple([x['SENDER LATITUDE'], x['SENDER LONGITUDE']]),
-                                                tuple([x['RECEIVER LATITUDE'], x['RECEIVER LONGITUDE']])
+        df['DISTANCE_2'] = Tracking.apply(lambda x:
+                                            Maps.request_directions(
+                                                x['SENDER LATITUDE'], x['SENDER LONGITUDE'],
+                                                x['RECEIVER LATITUDE'], x['RECEIVER LONGITUDE']
                                             ),
                                             axis=1)
         Tracking['UNIT'] = 'km'
@@ -375,12 +375,6 @@ if __name__ == '__main__':
                         type = str,
                         required = False)
 
-    parser.add_argument('--API_key',
-                        help = 'Google Maps API Key',
-                        type = str,
-                        default = None,
-                        required = False)
-
 
     args = parser.parse_args()
 
@@ -398,4 +392,4 @@ if __name__ == '__main__':
     elif args.Option == 'C':
 
         T = Off_tracker()
-        T.searching_shortest_distance_from_google_maps(args.API_key)
+        T.searching_shortest_distance_from_maps()
