@@ -13,10 +13,11 @@ import argparse
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../extract/gps')
 from coordinates_scraper import *
+from google_maps_api import *
 
 class Off_tracker:
 
-    def __init__(self, year, database):
+    def __init__(self, year=None, database=None):
         self.year = year
         self.database = database
         self._dir_path = os.path.dirname(os.path.realpath(__file__)) # Working Directory
@@ -304,8 +305,8 @@ class Off_tracker:
 
 
     def joining_databases(self):
-        Path_csv = self._dir_path + '/csv/'
-        Files = [File for File in os.listdir(Path_csv) if File.endswith('.csv')]
+        Path_csv = self._dir_path + '/csv/off_site_tracking/'
+        Files = os.listdir(Path_csv)
         Tracking = pd.DataFrame()
         for File in Files:
             Tracking_year = pd.read_csv(Path_csv + File, header = 0)
@@ -320,6 +321,38 @@ class Off_tracker:
                             index = False)
 
 
+    def searching_shortest_distance_from_google_maps(self, API_key):
+        Path_csv = self._dir_path + '/csv/off_site_tracking/'
+        Files = os.listdir(Path_csv)
+        Tracking = pd.DataFrame()
+        for File in Files:
+            Tracking_year = pd.read_csv(Path_csv + File, header=0,
+                                        usecols=[
+                                                'SENDER FRS ID', 'SENDER LATITUDE',
+                                                'SENDER LONGITUDE', 'RECEIVER FRS ID',
+                                                'RECEIVER LATITUDE', 'RECEIVER LONGITUDE'
+                                                ],
+                                        dtype = {'SENDER FRS ID': 'int',
+                                                'SENDER LATITUDE': 'float',
+                                                'SENDER LONGITUDE': 'float',
+                                                'RECEIVER FRS ID': 'int',
+                                                'RECEIVER LATITUDE': 'float',
+                                                'RECEIVER LONGITUDE': 'float'})
+            Tracking = pd.concat([Tracking, Tracking_year], ignore_index=True, axis=0)
+        Maps = Google_Maps(API_key)
+        Tracking.drop_duplicates(keep='first', inplace=True)
+        # Searching distance
+        Tracking['DISTANCE'] = Tracking.apply(lambda x:
+                                            Maps.google_maps_request_directions(
+                                                tuple([x['SENDER LATITUDE'], x['SENDER LONGITUDE']]),
+                                                tuple([x['RECEIVER LATITUDE'], x['RECEIVER LONGITUDE']])
+                                            ),
+                                            axis=1)
+        Tracking['UNIT'] = 'km'
+        Tracking.to_csv(self._dir_path + '/csv/Tracking_distances.csv', sep=',',
+                            index=False)
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(argument_default = argparse.SUPPRESS)
@@ -327,7 +360,8 @@ if __name__ == '__main__':
     parser.add_argument('Option',
                         help = 'What do you want to do?:\
                         [A]: Organize only one database\
-                        [B]: Join all the databases',
+                        [B]: Join all the databases\
+                        [C]: Search distances',
                         type = str)
 
     parser.add_argument('-db', '--database', nargs = '?',
@@ -339,7 +373,13 @@ if __name__ == '__main__':
     parser.add_argument('-Y', '--Year', nargs = '+',
                         help = 'What TRI or RCRAInfo year do you want to organize?.',
                         type = str,
-                        required = True)
+                        required = False)
+
+    parser.add_argument('--API_key',
+                        help = 'Google Maps API Key',
+                        type = str,
+                        default = None,
+                        required = False)
 
 
     args = parser.parse_args()
@@ -352,5 +392,10 @@ if __name__ == '__main__':
 
     elif args.Option == 'B':
 
-        T = Off_tracker(args.Year, args.database)
+        T = Off_tracker(args.Year)
         T.joining_databases()
+
+    elif args.Option == 'C':
+
+        T = Off_tracker()
+        T.searching_shortest_distance_from_google_maps(args.API_key)

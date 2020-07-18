@@ -372,15 +372,6 @@ class TRI_EoL:
         return df_SRS
 
 
-    def _harvesine_formula(self, Lat_1, Long_1, Lat_2, Long_2):
-        Average_earth_radius = 6371
-        phi1, phi2 = math.radians(Lat_1), math.radians(Lat_2)
-        dphi = math.radians(Lat_2 - Lat_1)
-        dlambda= math.radians(Long_2 - Long_1)
-        a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
-        return 2*R*math.atan2(math.sqrt(a), math.sqrt(1 - a))
-
-
     def generate_dataframe(self):
         regex =  re.compile(r'TRI_File_(\d{1}[a-zA-Z]?)_Columns_for_DQ_Reliability.txt')
         Path_DQ = self._dir_path + '/../../ancillary/tri'
