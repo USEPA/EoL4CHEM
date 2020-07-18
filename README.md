@@ -46,10 +46,20 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
 
 # Pathways uncertainty
 
+## Possibilities based on scenarios
+
 <p align="center">
   <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Fuzziness_pathways.png width="80%">
 </p>
 
+## Fuzzy Analytical Hierarchy Process (FAHP) 
 <p align="center">
   <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/FAHP_pathways.png width="80%">
 </p>
+
+### Distance between facilities
+
+<p align="center">
+  <img src=https://github.com/jodhernandezbe/EoL4Chem/blob/master/Comparison_distances.png width="100%">
+</p>
+
