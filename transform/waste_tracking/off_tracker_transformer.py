@@ -12,7 +12,7 @@ warnings.simplefilter(action = 'ignore', category = FutureWarning)
 import argparse
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../extract/gps')
-from coordinates_scraper import *
+from project_nominatim import *
 from project_osrm import *
 
 class Off_tracker:
@@ -53,18 +53,18 @@ class Off_tracker:
             df_lat_long_saved.rename(columns = {'FRS ID': col_id},
                                     inplace = True)
             To_search = pd.merge(non_lat_log, df_lat_long_saved,
-                                how = 'left', on = col_id)
+                                how='left', on=col_id)
             non_lat_log = To_search.loc[pd.notnull(To_search['LATITUDE'])]
             To_search = To_search.loc[pd.isnull(To_search['LATITUDE'])]
-            non_lat_log.drop(columns = ['ADDRESS', 'CITY',
+            non_lat_log.drop(columns=['ADDRESS', 'CITY',
                                                 'STATE', 'ZIP'],
-                                    inplace = True)
+                                    inplace=True)
         else:
             To_search = non_lat_log
             non_lat_log = pd.DataFrame()
         if not To_search.empty:
-            Scraper = GPS_scraper(To_search)
-            To_search = Scraper.browsing()
+            Nominatim = NOMINATIM_API(To_search)
+            To_search = Nominatim.request_coordinates(To_search)
         To_search.drop(columns = ['ADDRESS', 'CITY',
                                   'STATE', 'ZIP'],
                                 inplace = True)
@@ -342,15 +342,39 @@ class Off_tracker:
         Maps = OSRM_API()
         Tracking.drop_duplicates(keep='first', inplace=True)
         # Searching distance
-        df['DISTANCE_2'] = Tracking.apply(lambda x:
-                                            Maps.request_directions(
-                                                x['SENDER LATITUDE'], x['SENDER LONGITUDE'],
-                                                x['RECEIVER LATITUDE'], x['RECEIVER LONGITUDE']
-                                            ),
-                                            axis=1)
-        Tracking['UNIT'] = 'km'
-        Tracking.to_csv(self._dir_path + '/csv/Tracking_distances.csv', sep=',',
-                            index=False)
+        Path_distances = self._dir_path + '/csv/Tracking_distances.csv'
+        if os.path.exists(Path_distances):
+            df_distances = pd.read_csv(Path_distances,
+                                       usecols=['SENDER FRS ID', 'RECEIVER FRS ID',
+                                                'DISTANCE'],
+                                       dtype={'SENDER FRS ID': 'int',
+                                            'RECEIVER FRS ID': 'int',
+                                            'DISTANCE': 'float'})
+            Tracking = pd.merge(Tracking, df_distances,
+                                on=['SENDER FRS ID', 'RECEIVER FRS ID'],
+                                how='left')
+            Tracking = Tracking.loc[pd.isnull(Tracking['DISTANCE'])]
+        if not Tracking.empty:
+            Tracking[['DISTANCE', 'MARITIME FRACTION']] = Tracking.apply(lambda x:
+                                                pd.Series(
+                                                  Maps.request_directions(
+                                                    x['SENDER LATITUDE'], x['SENDER LONGITUDE'],
+                                                    x['RECEIVER LATITUDE'], x['RECEIVER LONGITUDE']
+                                                                         )
+                                                           ),
+                                                axis=1)
+            Tracking['UNIT'] = 'km'
+            columns = ['SENDER FRS ID', 'SENDER LATITUDE', 'SENDER LONGITUDE',
+                    'RECEIVER FRS ID', 'RECEIVER LATITUDE', 'RECEIVER LONGITUDE',
+                    'DISTANCE', 'UNIT', 'MARITIME FRACTION']
+            Tracking = Tracking[columns]
+            if os.path.exists(Path_distances):
+                Tracking.to_csv(Path_distances, sep=',',
+                                index=False, mode='a',
+                                header=False)
+            else:
+                Tracking.to_csv(Path_distances, sep=',',
+                                index=False)
 
 
 if __name__ == '__main__':
