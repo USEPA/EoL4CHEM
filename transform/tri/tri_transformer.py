@@ -372,6 +372,28 @@ class TRI_EoL:
         return df_SRS
 
 
+    def _transport_cost(self, Distance, P_maritime, Flow):
+        # https://pdfs.semanticscholar.org/f629/6cff5417db9141322e3c8e70b17d64a7ec53.pdf
+        # We are considering stack trucks
+        Inflation_rate = 148.12 # from 1994 to 2020
+        Aver_load_carried_by_stake = 11.6
+        Distance = Distance*0.621371 # km to miles
+        Flow = Flow*0.001 # kg to metric tons
+        One_way_shipment_lenght = Distance*(1 - P_maritime)
+        cltm_stake =  ((3.02/Aver_load_carried_by_stake) + (129.38/One_way_shipment_lenght*Aver_load_carried_by_stake)) * ( 1 + Inflation_rate/100)
+        N_ton_miles_per_shipment = Aver_load_carried_by_stake*Distance
+        Cost_per_shipment = N_ton_miles_per_shipment*cltm_stake
+        Aver_number_of_shipments = math.ceil(Flow/Aver_load_carried_by_stake)
+        Total_land_shipment_cots = Aver_number_of_shipments*Cost_per_shipment
+        # We are considering the average maritime transport cost of manufacturing commodities between Dominican Republic
+        # and the U.S.. The distance is between the Port of Miami to Port of Santo Domingo, Dominican Republic
+        # https://stats.oecd.org/Index.aspx?DataSetCode=MTC#
+        Aver_unit_cost_for_maritime_transport = 0.6917 # USD/ton*mil
+        Total_maritime_shipment_cots = Distance*P_maritime*Aver_unit_cost_for_maritime_transport
+        Total_transport_cost = Total_maritime_shipment_cots + Total_land_shipment_cots
+        return Total_transport_cost
+
+
     def generate_dataframe(self):
         regex =  re.compile(r'TRI_File_(\d{1}[a-zA-Z]?)_Columns_for_DQ_Reliability.txt')
         Path_DQ = self._dir_path + '/../../ancillary/tri'
