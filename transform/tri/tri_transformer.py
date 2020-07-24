@@ -7,31 +7,30 @@
 # Although FRS ID for off-site locations was added since 2018, we could observe that many facilities don´t know this entry and it easy to find this location using RCRA ID
 
 # Importing libraries
-import os, sys
-import chardet, codecs
+import os
+import sys
+import chardet
+import codecs
 import argparse
 import pandas as pd
-pd.options.mode.chained_assignment = None
-import numpy as np
 from functools import reduce
 import re
 import warnings
 import time
 import math
-warnings.simplefilter(action = 'ignore', category = FutureWarning)
-
-from merging import *
-
+from merging import fuctions_rows_grouping
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/../../extract/gps')
-from coordinates_scraper import *
+from project_nominatim import NOMINATIM_API
+pd.options.mode.chained_assignment = None
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 class TRI_EoL:
 
-    def __init__(self, year, Files = None):
+    def __init__(self, year, Files=None):
         self.year = year
         self.Files = Files
-        self._dir_path = os.path.dirname(os.path.realpath(__file__)) # Working Directory
-        #self._dir_path = os.getcwd() # if you are working on Jupyter Notebook
+        self._dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
     def _dq_columns(self, file):
@@ -114,7 +113,7 @@ class TRI_EoL:
         Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in TRI.columns]
-        TRI = TRI[columns]
+        TRI = TRI[Columns]
         return TRI
 
 
@@ -324,12 +323,12 @@ class TRI_EoL:
         for i, file in enumerate(naics_files):
             df_aux = pd.read_csv(Path_naics + '/' + file, low_memory = False,
                                 sep = ',', header = 0)
-            if i != 0:
+            if i == 0:
+                df = df_aux
+            else:
                 cols = list(df_aux.iloc[:, 0:2].columns)
                 df = pd.merge(df, df_aux, how = 'outer', on = cols)
                 df.drop_duplicates(keep = 'first', inplace = True)
-            else:
-                df = df_aux
         TRI.sort_values(by = ['RETDF REPORTING YEAR'], inplace = True)
         TRI.reset_index(inplace = True)
         TRI = TRI.groupby('RETDF REPORTING YEAR', as_index = False).apply(lambda x: self._searching_equivalent_naics(x, df))
@@ -477,7 +476,6 @@ class TRI_EoL:
         SRS_TRI_RCRA.drop(['ID_x', 'ID_y', 'Internal Tracking Number', 'CAS'], axis = 1,
                                           inplace = True)
         TRI_RCRAInfo_Merged = pd.merge(TRI, SRS_TRI_RCRA, how = 'left', on = 'TRI CHEMICAL ID NUMBER')
-        SRS_TRI_Columns = list(SRS_TRI_RCRA.columns)
         # Reading .txt with order for columns
         Path_txt = self._dir_path + '/../../ancillary/others/Features_at_EoL.txt'
         Columns = pd.read_csv(Path_txt, header = None, sep = '\t').iloc[:, 0].tolist()
@@ -549,8 +547,6 @@ class TRI_EoL:
                            on = 'REGISTRY_ID', how = 'inner')
         TRI_IDs['RECEIVER FRS ID'] = TRI_IDs['REGISTRY_ID'].astype(int).apply(lambda x: abs(x))
         TRI_IDs.drop(['REGISTRY_ID', 'PGM_SYS_ID'], axis = 1, inplace = True)
-        TRI_FRS = pd.concat([TRI_IDs, TRI_non_IDs], ignore_index = True,
-                             sort = True, axis = 0)
         # Searching facilities in RCRAInfo (without RCRA ID)
         TRI_RCRAInfo = pd.merge(E_RCRAINFO, TRI_non_IDs,
                                  left_on = 'REGISTRY_ID',
@@ -585,8 +581,8 @@ class TRI_EoL:
                                        'RECEIVER STATE': 'STATE',
                                        'RECEIVER ZIP': 'ZIP'},
                             inplace = True)
-        Scraper = GPS_scraper(NON_LAT_LONG)
-        NON_LAT_LONG = Scraper.browsing()
+        Nominatim = NOMINATIM_API()
+        NON_LAT_LONG = Nominatim.request_coordinates(NON_LAT_LONG)
         # Merging findings
         NON_LAT_LONG.rename(columns = {'ADDRESS': 'RECEIVER STREET',
                                        'CITY': 'RECEIVER CITY',
@@ -701,11 +697,9 @@ class TRI_EoL:
         RCRA_facility['COHERENCY'] = 'F'
         RCRA_facility.loc[RCRA_facility['QUANTITY RECEIVED'] \
                         >= RCRA_facility['QUANTITY TRANSFER OFF-SITE'], 'COHERENCY'] = 'T' # Flow coherency
-        grouping = Columns
-
-        columns_grouping + ['WASTE MANAGEMENT UNDER EPA WMH',\
-                                       'WASTE MANAGEMENT UNDER TSCA' , \
-                                       'RETDF TRIFID', 'RETDF FRS ID']
+        grouping = Columns + ['WASTE MANAGEMENT UNDER EPA WMH',
+                              'WASTE MANAGEMENT UNDER TSCA',
+                              'RETDF TRIFID', 'RETDF FRS ID']
         RCRA_facility = RCRA_facility.join(RCRA_facility.groupby(grouping)['COHERENCY'].apply(lambda x: 'F' if (x == 'F').all() else 'T'), on = grouping, rsuffix = '_r')
         No_coherent = RCRA_facility.loc[RCRA_facility['COHERENCY_r'] == 'F'].drop_duplicates(keep = 'first', subset = grouping)
         No_successful = pd.concat([No_successful, No_coherent], ignore_index = True, axis = 0)

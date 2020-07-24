@@ -3,18 +3,16 @@
 
 # Importing libraries
 import requests
-import pandas as pd
 import sys
 import os
 
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + '/..')
-from common import config
+
 
 class NOMINATIM_API:
 
     def __init__(self):
         self.url = 'https://nominatim.openstreetmap.org'
-
 
     def request_coordinates(self, address_city_state_zip):
         address_city_state_zip['LONGITUDE'] = None
@@ -29,8 +27,10 @@ class NOMINATIM_API:
             result = requests.get(query)
             try:
                 if result.status_code == 200:
-                    address_city_state_zip.loc[idx, 'LATITUDE'] = float(result.json()[0]['lat'])
-                    address_city_state_zip.loc[idx, 'LONGITUDE'] = float(result.json()[0]['lon'])
+                    address_city_state_zip.loc[idx, 'LATITUDE'] =\
+                        float(result.json()[0]['lat'])
+                    address_city_state_zip.loc[idx, 'LONGITUDE'] =\
+                        float(result.json()[0]['lon'])
                 else:
                     address_city_state_zip.loc[idx, 'LATITUDE'] = None
                     address_city_state_zip.loc[idx, 'LONGITUDE'] = None

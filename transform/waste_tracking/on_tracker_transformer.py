@@ -30,22 +30,30 @@ class On_Tracker:
             except ValueError:
                 return np.nan
 
-
     def _organizing_flows(self, classification, flow, bs):
         if classification == 'TRI':
-            return tuple((0.5 if bs[i] and float(v) == 0.0 else float(v)) if re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None for i, v in enumerate(flow))
+            return tuple((0.5 if bs[i] and float(v) == 0.0 else float(v)) if
+                         re.search(
+                            r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None
+                         for i, v in enumerate(flow))
         elif classification == 'DIOXIN':
-            return tuple((0.00005 if bs[i] and float(v) == 0.0 else float(v)) if re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None for i, v in enumerate(flow))
+            return tuple((0.00005 if bs[i] and float(v) == 0.0 else float(v)) if
+                         re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else
+                         None for i, v in enumerate(flow))
         elif classification == 'PBT':
-            return tuple((0.1 if bs[i] and float(v) == 0.0 else float(v)) if re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None for i, v in enumerate(flow))
+            return tuple((0.1 if bs[i] and float(v) == 0.0 else float(v)) if
+                         re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else
+                         None for i, v in enumerate(flow))
         else:
-            return tuple((0.0 if bs[i] and float(v) == 0.0 else float(v)) if re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else None for i, v in enumerate(flow))
-
+            return tuple((0.0 if bs[i] and float(v) == 0.0 else float(v)) if
+                         re.search(r'[^A-Za-z]\s?[0-9]+\.?[0-9]*\s?', v) else
+                         None for i, v in enumerate(flow))
 
     def organizing_releases(self):
         mapping = {'M': 1, 'M1': 1, 'M2': 1, 'E': 2,
-                'E1': 2, 'E2': 2, 'C': 3, 'O': 4,
-                'X': 5, 'N': 5, 'NA': 5}
+                   'E1': 2, 'E2': 2, 'C': 3, 'O': 4,
+                   'X': 5, 'N': 5, 'NA': 5}
+
         def organizing_NAICS(x):
             try:
                 result = re.search(r'([0-9]+).?0*', x)
@@ -63,36 +71,56 @@ class On_Tracker:
         for File in Files:
             Path_csv = self._dir_path + f'/../../extract/tri/csv/US_{File}_{self.year}.csv'
             Path_txt = self._dir_path + f'/../../ancillary/tri/TRI_File_{File}_needed_columns_tracking.txt'
-            df_columns = pd.read_csv(Path_txt, header = None, sep = ',')
-            columns_needed =  df_columns.iloc[:, 0].tolist()
-            df = pd.read_csv(Path_csv, header = 0, sep = ',', low_memory = False,
-                            converters = columns_converting, usecols = columns_needed,
-                            dtype = str)
-            columns_flow = [col.replace(' - BASIS OF ESTIMATE', '') for col in columns_needed if ' - BASIS OF ESTIMATE' in col]
+            df_columns = pd.read_csv(Path_txt, header=None, sep=',')
+            columns_needed = df_columns.iloc[:, 0].tolist()
+            df = pd.read_csv(Path_csv, header=0, sep=',', low_memory=False,
+                             converters=columns_converting,
+                             usecols=columns_needed,
+                             dtype = str)
+            columns_flow = [col.replace(' - BASIS OF ESTIMATE', '') for col in
+                            columns_needed if ' - BASIS OF ESTIMATE' in col]
             if File == '1a':
-                df['PRIMARY NAICS CODE'] =  df['PRIMARY NAICS CODE'].apply(lambda x: organizing_NAICS(x))
-                df['MAXIMUM AMOUNT ON-SITE'] = pd.to_numeric(df['MAXIMUM AMOUNT ON-SITE'], errors = 'coerce')
-                columns_releases = df_columns.loc[df_columns.iloc[:, 1] == 'Release', 0].tolist()
-                df_compartments = df_columns.loc[pd.notnull(df_columns.iloc[:, 2]), [0, 2]]
-                on_site_managment_different_disposal = ['ON-SITE - ENERGY RECOVERY', 'ON-SITE - RECYCLED', 'ON-SITE - TREATED']
-                on_site_managment_different_disposal_DQ = [col + ' - BASIS OF ESTIMATE' for col in on_site_managment_different_disposal]
-                df = df.assign(**{col + ' - BASIS OF ESTIMATE': 'M' for col in on_site_managment_different_disposal})
+                df['PRIMARY NAICS CODE'] = df['PRIMARY NAICS CODE']\
+                        .apply(lambda x: organizing_NAICS(x))
+                df['MAXIMUM AMOUNT ON-SITE'] = pd.to_numeric(
+                                               df['MAXIMUM AMOUNT ON-SITE'],
+                                               errors='coerce')
+                columns_releases =\
+                    df_columns.loc[df_columns.iloc[:, 1] == 'Release', 0]\
+                    .tolist()
+                df_compartments = df_columns.loc[
+                                                pd.notnull(
+                                                 df_columns.iloc[:, 2]),
+                                                [0, 2]]
+                on_site_managment_different_disposal =\
+                    ['ON-SITE - ENERGY RECOVERY', 'ON-SITE - RECYCLED',
+                     'ON-SITE - TREATED']
+                df = df.assign(**{col + ' - BASIS OF ESTIMATE': 'M' for col in
+                               on_site_managment_different_disposal})
                 columns_flow = columns_flow + on_site_managment_different_disposal
                 del on_site_managment_different_disposal
             if File == '3a':
-                df.drop(columns = ['OFF-SITE RCRA ID NR', 'OFF-SITE COUNTRY ID', 'REPORTING YEAR', 'UNIT OF MEASURE'], inplace = True)
-            df[columns_flow] = df[columns_flow].where(pd.notnull(df[columns_flow]), '0.0')
+                df.drop(columns=['OFF-SITE RCRA ID NR', 'OFF-SITE COUNTRY ID',
+                                 'REPORTING YEAR', 'UNIT OF MEASURE'],
+                        inplace=True)
+            df[columns_flow] =\
+                df[columns_flow].where(pd.notnull(df[columns_flow]), '0.0')
             columns_DQ = [col + ' - BASIS OF ESTIMATE' for col in columns_flow]
-            df[columns_DQ] = df[columns_DQ].where(pd.notnull(df[columns_DQ]), None)
+            df[columns_DQ] = df[columns_DQ].where(pd.notnull(df[columns_DQ]),
+                                                  None)
             if File == '1a':
-                columns_releases_DQ  = [col + ' - BASIS OF ESTIMATE' for col in columns_releases]
-                df[columns_releases] = df.apply(lambda x: pd.Series(self._organizing_flows(x['CLASSIFICATION'], \
-                                                 x[columns_releases].tolist(), x[columns_releases_DQ].tolist())),
-                                                 axis = 1)
-                df.drop(columns = ['CLASSIFICATION'], inplace = True)
+                columns_releases_DQ = [col + ' - BASIS OF ESTIMATE'
+                                       for col in columns_releases]
+                df[columns_releases] =\
+                    df.apply(lambda x: pd.Series(
+                     self._organizing_flows(x['CLASSIFICATION'],
+                                            x[columns_releases].tolist(),
+                                            x[columns_releases_DQ].tolist())),
+                             axis=1)
+                df.drop(columns=['CLASSIFICATION'], inplace=True)
             df[columns_DQ] = df.apply(lambda row: pd.Series('M' if (row[columns_flow[i]] == 0.0 and pd.isnull(row[columns_DQ[i]])) \
                                   else ('X' if (row[columns_flow[i]] != 0.0 and pd.isnull(row[columns_DQ[i]])) \
-                                  else row[columns_DQ[i]]) for i in range(len(columns_flow))), axis = 1)
+                                  else row[columns_DQ[i]]) for i in range(len(columns_flow))), axis=1)
             df[columns_flow] = df[columns_flow].apply(pd.to_numeric, errors = 'coerce')
             df = df.loc[pd.notnull(df).all(axis =  1)]
             df[columns_DQ] = df[columns_DQ].apply(lambda x: x.str.strip().map(mapping), axis = 1)
