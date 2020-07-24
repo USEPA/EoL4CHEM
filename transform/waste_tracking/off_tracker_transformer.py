@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
+# !/usr/bin/env python
 
 # Importing libraries
 import pandas as pd
 import numpy as np
-pd.options.mode.chained_assignment = None
 import os
 import sys
 import re
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
 import argparse
 sys.path.append(os.path.dirname(
                 os.path.realpath(__file__))+'/../../extract/gps')
 from project_nominatim import NOMINATIM_API
 from project_osrm import OSRM_API
+warnings.simplefilter(action='ignore', category=FutureWarning)
+pd.options.mode.chained_assignment = None
 
 
 class Off_tracker:
@@ -146,11 +146,13 @@ class Off_tracker:
                        'E1': 2, 'E2': 2, 'C': 3, 'O': 4,
                        'X': 5, 'N': 5, 'NA': 5}
             cols = ['REPORTING YEAR', 'SENDER FRS ID', 'SENDER LATITUDE',
-                    'SENDER LONGITUDE', 'SRS INTERNAL TRACKING NUMBER', 'CAS',
+                    'SENDER LONGITUDE', 'SENDER STATE',
+                    'SRS INTERNAL TRACKING NUMBER', 'CAS',
                     'QUANTITY TRANSFERRED', 'RELIABILITY',
                     'FOR WHAT IS TRANSFERRED', 'UNIT OF MEASURE',
                     'RECEIVER FRS ID', 'RECEIVER TRIFID',
-                    'RECEIVER LATITUDE', 'RECEIVER LONGITUDE']
+                    'RECEIVER LATITUDE', 'RECEIVER LONGITUDE',
+                    'RECEIVER STATE']
             Path_txt = self._dir_path + '/../../ancillary/tri/TRI_File_3a_needed_columns_tracking.txt'
             columns_needed = pd.read_csv(Path_txt,
                                          header=None,
@@ -170,16 +172,17 @@ class Off_tracker:
                                     na=False)]
             df = df.loc[(df[column_flows] != 0).any(axis=1)]
             columns = ['TRIFID', 'CAS NUMBER', 'UNIT OF MEASURE',
-                       'REPORTING YEAR', 'LATITUDE',
-                       'LONGITUDE', 'OFF-SITE RCRA ID NR',
-                       'QUANTITY TRANSFERRED', 'RELIABILITY',
-                       'FOR WHAT IS TRANSFERRED']
+                       'REPORTING YEAR',
+                       'LATITUDE', 'LONGITUDE', 'OFF-SITE RCRA ID NR',
+                       'QUANTITY TRANSFERRED',
+                       'RELIABILITY', 'FOR WHAT IS TRANSFERRED']
             _df = pd.DataFrame(columns=columns)
             for col in column_flows:
                 df_aux = df[['TRIFID', 'CAS NUMBER', 'UNIT OF MEASURE',
-                             'REPORTING YEAR', 'LATITUDE', 'LONGITUDE',
+                             'REPORTING YEAR',
+                             'LATITUDE', 'LONGITUDE',
                              'OFF-SITE RCRA ID NR',
-                            col, col + ' - BASIS OF ESTIMATE']]
+                             col, col + ' - BASIS OF ESTIMATE']]
                 df_aux.rename(columns={col: 'QUANTITY TRANSFERRED',
                                        f'{col} - BASIS OF ESTIMATE':
                                        'RELIABILITY'},
@@ -227,13 +230,14 @@ class Off_tracker:
             del FRS
             RCRA.drop('PGM_SYS_ACRNM', axis=1, inplace=True)
             TRI.drop(['PGM_SYS_ACRNM', 'LOCATION_ADDRESS', 'CITY_NAME',
-                      'STATE_CODE', 'POSTAL_CODE',
-                      'LATITUDE83', 'LONGITUDE83'], axis=1, inplace=True)
+                      'POSTAL_CODE', 'LATITUDE83', 'LONGITUDE83'],
+                     axis=1, inplace=True)
             TRI.rename(columns={'PGM_SYS_ID': 'TRIFID'}, inplace=True)
             _df = pd.merge(_df, TRI, how='inner', on='TRIFID')
             _df.rename(columns={'REGISTRY_ID': 'SENDER FRS ID',
                                 'LATITUDE': 'SENDER LATITUDE',
-                                'LONGITUDE': 'SENDER LONGITUDE'},
+                                'LONGITUDE': 'SENDER LONGITUDE',
+                                'STATE_CODE': 'SENDER STATE'},
                        inplace=True)
             _df.drop(['TRIFID'], axis=1, inplace=True)
             # Searching info for receiver
@@ -249,6 +253,8 @@ class Off_tracker:
             _df = self._searching_lat_long(_df, 'RECEIVER FRS ID',
                                            'RECEIVER LATITUDE',
                                            'RECEIVER LONGITUDE')
+            _df.rename(columns={'STATE_CODE': 'RECEIVER STATE'},
+                       inplace=True)
             # TRIFID for receivers
             _df = pd.merge(_df, TRI, how='left', left_on='RECEIVER FRS ID',
                            right_on='REGISTRY_ID')
@@ -257,17 +263,17 @@ class Off_tracker:
             # Saving
             _df = _df[cols]
             _df.drop_duplicates(keep='first', inplace=True)
-            _df.to_csv(self._dir_path + f'/csv/off_site_tracking\
-            /TRI_{self.year}_Off-site_Tracking.csv',
+            _df.to_csv(self._dir_path + f'/csv/off_site_tracking/TRI_{self.year}_Off-site_Tracking.csv',
                        sep=',',  index=False)
         else:
             cols = ['REPORTING YEAR', 'SENDER FRS ID', 'SENDER LATITUDE',
-                    'SENDER LONGITUDE', 'SRS INTERNAL TRACKING NUMBER', 'CAS',
+                    'SENDER LONGITUDE', 'SENDER STATE',
+                    'SRS INTERNAL TRACKING NUMBER', 'CAS',
                     'WASTE SOURCE CODE', 'QUANTITY RECEIVED',
                     'QUANTITY TRANSFERRED', 'RELIABILITY',
                     'FOR WHAT IS TRANSFERRED', 'UNIT OF MEASURE',
                     'RECEIVER FRS ID', 'RECEIVER TRIFID', 'RECEIVER LATITUDE',
-                    'RECEIVER LONGITUDE']
+                    'RECEIVER LONGITUDE', 'RECEIVER STATE']
             Path_txt = self._dir_path + '/../../ancillary/rcrainfo/RCRAInfo_needed_columns.txt'
             columns_needed = pd.read_csv(Path_txt, header=None,
                                          sep='\t').iloc[:, 0].tolist()
@@ -331,10 +337,11 @@ class Off_tracker:
             df = self._searching_lat_long(df, 'SENDER FRS ID',
                                           'SENDER LATITUDE',
                                           'SENDER LONGITUDE')
+            df.rename(columns={'STATE_CODE': 'SENDER STATE'},
+                       inplace=True)
             # Searching info for receiver
             df = pd.merge(df, RCRA, how='inner',
-                          left_on='EPA ID Number of Facility to \
-                          Which Waste was Shipped',
+                          left_on='EPA ID Number of Facility to Which Waste was Shipped',
                           right_on='PGM_SYS_ID')
             df.rename(columns={'REGISTRY_ID': 'RECEIVER FRS ID',
                                'LATITUDE83': 'RECEIVER LATITUDE',
@@ -343,7 +350,9 @@ class Off_tracker:
                       inplace=True)
             df = self._searching_lat_long(df, 'RECEIVER FRS ID',
                                           'RECEIVER LATITUDE',
-                                          'RECEIVER LONGITUDE')
+                                          'RECEIVER LONGITUDE')                                          
+            df.rename(columns={'STATE_CODE': 'RECEIVER STATE'},
+                       inplace=True)
             df.drop(['PGM_SYS_ID',
                      'EPA ID Number of Facility to Which Waste was Shipped'],
                     axis=1, inplace=True)
@@ -518,13 +527,13 @@ class Off_tracker:
         Chemical_management = Chemical_management.loc[
                         Chemical_management['FOR WHAT IS TRANSFERRED']
                         != 'Storage and Transfer -The site receiving this waste stored/bulked and transferred the waste with no reclamation, recovery, destruction, treatment, or disposal at that site']
-        Chemical_management = Chemical_management.groupby(
-                                            ['SRS INTERNAL TRACKING NUMBER',
-                                             'FOR WHAT IS TRANSFERRED'])\
-                                                 .size()\
-                                                 .reset_index(name='TIME')
+        Chemical_management =\
+            Chemical_management.groupby(
+                                        ['SRS INTERNAL TRACKING NUMBER',
+                                         'FOR WHAT IS TRANSFERRED'])\
+            .size().reset_index(name='TIME')
         Chemical_management.to_csv(self._dir_path + '/csv/Relation_Chemical_Management.csv',
-                               index=False, sep=',')
+                                   index=False, sep=',')
 
 
 if __name__ == '__main__':
