@@ -338,7 +338,7 @@ class Off_tracker:
                                           'SENDER LATITUDE',
                                           'SENDER LONGITUDE')
             df.rename(columns={'STATE_CODE': 'SENDER STATE'},
-                       inplace=True)
+                      inplace=True)
             # Searching info for receiver
             df = pd.merge(df, RCRA, how='inner',
                           left_on='EPA ID Number of Facility to Which Waste was Shipped',
@@ -350,7 +350,7 @@ class Off_tracker:
                       inplace=True)
             df = self._searching_lat_long(df, 'RECEIVER FRS ID',
                                           'RECEIVER LATITUDE',
-                                          'RECEIVER LONGITUDE')                                          
+                                          'RECEIVER LONGITUDE')
             df.rename(columns={'STATE_CODE': 'RECEIVER STATE'},
                        inplace=True)
             df.drop(['PGM_SYS_ID',
