@@ -309,7 +309,7 @@ class TRI_EoL:
                                   'RECEIVER TRIFID': 'RETDF TRIFID'},
                          inplace=True)
             Paths['NUMBER OF BROKERS'] = n_broker
-            # 
+            #
             # Paths =\
             #     Paths.groupby(['SENDER FRS ID']).apply(lambda x:
             #                                            self._estimating_relative_importance_for_pathways(
@@ -1036,7 +1036,6 @@ class TRI_EoL:
                                 usecols=['SENDER FRS ID', 'RECEIVER FRS ID',
                                          'DISTANCE', 'MARITIME FRACTION'])
         Path_saved = dict()
-        print(Track.info())
         # for index, row in Broker.iterrows():
         #     aux_tuple = tuple(row[['WASTE MANAGEMENT UNDER TRI',
         #                            'RECEIVER FRS ID',
