@@ -225,7 +225,8 @@ class On_Tracker:
                                   usecols=['TRIFID', 'FACILITY NAME',
                                            'FACILITY STREET', 'FACILITY CITY',
                                            'FACILITY COUNTY', 'FACILITY STATE',
-                                           'FACILITY ZIP CODE'])
+                                           'FACILITY ZIP CODE', 'LATITUDE',
+                                           'LONGITUDE'])
             df_TRI = pd.concat([TRI_aux, df_TRI], ignore_index=True, axis=0)
         df_TRI.drop_duplicates(keep='first', inplace=True, subset=['TRIFID'])
         df_TRI.to_csv(self._dir_path + '/csv/on_site_tracking/Facility_Information.csv',

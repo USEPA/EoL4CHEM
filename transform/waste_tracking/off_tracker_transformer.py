@@ -352,7 +352,7 @@ class Off_tracker:
                                           'RECEIVER LATITUDE',
                                           'RECEIVER LONGITUDE')
             df.rename(columns={'STATE_CODE': 'RECEIVER STATE'},
-                       inplace=True)
+                      inplace=True)
             df.drop(['PGM_SYS_ID',
                      'EPA ID Number of Facility to Which Waste was Shipped'],
                     axis=1, inplace=True)
@@ -472,7 +472,7 @@ class Off_tracker:
         Management.loc[Management['TRI Waste Management']
                        .str.contains('broker', na=False),
                        'RCRA Waste Management'] =\
-                       'Storage and Transfer -The site receiving this waste stored/bulked and transferred the waste with no reclamation, recovery, destruction, treatment, or disposal at that site'
+            'Storage and Transfer -The site receiving this waste stored/bulked and transferred the waste with no reclamation, recovery, destruction, treatment, or disposal at that site'
         Management.rename(columns={'TRI Waste Management':
                                    'FOR WHAT IS TRANSFERRED'},
                           inplace=True)

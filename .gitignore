@@ -3,3 +3,4 @@
 /extract/rcrainfo/csv/*.csv
 /extract/tri/csv/*.csv
 /transform/tri/2018/*.csv
+**/__pycache__/

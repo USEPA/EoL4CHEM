@@ -3,8 +3,7 @@
 
 # Importing libraries
 import numpy as np
-import pandas as pd
-import os
+
 
 def comparison_matrix(df, cols):
     Some_criteri = ['WHM importance', 'T Flammability',
@@ -36,12 +35,12 @@ def fahp(n, cols_criteri, df):
     m_criteria = len(cols_criteri)
     N = comparison_matrix(df, cols_criteri)
     # Definition of variables
-    W = np.zeros((1, n)) # initial value of weights vector (desired output)
-    w = np.zeros((m_criteria, n)) # initial value of weithts matrix
-    phi = np.zeros((m_criteria, 1)) # diversification degree
-    eps = np.zeros((m_criteria, 1)) # entropy
-    theta = np.zeros((1, m_criteria)) # criteria' uncertainty degrees
-    sumphi = 0 # Initial value of diversification degree
+    W = np.zeros((1, n))  # initial value of weights vector (desired output)
+    w = np.zeros((m_criteria, n))  # initial value of weithts matrix
+    phi = np.zeros((m_criteria, 1))  # diversification degree
+    eps = np.zeros((m_criteria, 1))  # entropy
+    theta = np.zeros((1, m_criteria))  # criteria' uncertainty degrees
+    sumphi = 0  # Initial value of diversification degree
     # Triangular fuzzy numbers (TFN)
     # n is number of PCUs
     # TFN is a vector with n segments and each one has 3 different numbers
@@ -50,47 +49,48 @@ def fahp(n, cols_criteri, df):
     # the first segment: equal importance; the second one: moderate importance of one over another;
     # the third one: strong importance of one over another; the fourth one: very strong importance of one over another
     # the fifth one: Absolute importance of one over another
-    TFN = np.array([1, 1, 1 ,2/3, 1, 3/2, 3/2, 2, 5/2, 5/2, 3, 7/2, 7/2, 4, 9/2])
+    TFN = np.array([1, 1, 1, 2/3, 1, 3/2, 3/2, 2,
+                    5/2, 5/2, 3, 7/2, 7/2, 4, 9/2])
     for k in range(1, m_criteria + 1):
         a = np.zeros((1, n*n*3))  # Comparison matrix (In this case is a vector because of computational memory
         for i in range(k*n-(n-1), k*n + 1):
             for j in range(i-n*(k-1), n + 1):
                 # This is the position of the third element of the segment for
-	            # a*(i,j) (upper triangular part)
+                # a*(i,j) (upper triangular part)
                 jj = 3*(n*((i-n*(k-1))-1)+j)
                 # This is the position of the thrid element of the segment for
-	            # a*(j,i) (lower triangular part)
+                # a*(j,i) (lower triangular part)
                 jjj = 3*(n*(j-1) + i-n*(k-1))
                 if N[i - 1][j - 1] == -4:
-                    a[0][jjj-3:jjj] =  TFN[12:15]
+                    a[0][jjj-3:jjj] = TFN[12:15]
                     a[0][jj-3:jj] = np.array([TFN[14]**-1, TFN[13]**-1, TFN[12]**-1])
                 elif N[i - 1][j - 1] == -3:
-                    a[0][jjj-3:jjj] =  TFN[9:12]
+                    a[0][jjj-3:jjj] = TFN[9:12]
                     a[0][jj-3:jj] = np.array([TFN[11]**-1, TFN[10]**-1, TFN[9]**-1])
                 elif N[i - 1][j - 1] == -2:
                     a[0][jjj-3:jjj] = TFN[6:9]
                     a[0][jj-3:jj] = np.array([TFN[8]**-1, TFN[7]**-1, TFN[6]**-1])
                 elif N[i - 1][j - 1] == -1:
-                    a[0][jjj-3:jjj] =  TFN[3:6]
+                    a[0][jjj-3:jjj] = TFN[3:6]
                     a[0][jj-3:jj] = np.array([TFN[5]**-1, TFN[4]**-1, TFN[3]**-1])
                 elif N[i - 1][j - 1] == 0:
-                    a[0][jj-3:jj] =  TFN[0:3]
+                    a[0][jj-3:jj] = TFN[0:3]
                     a[0][jjj-3:jjj] = TFN[0:3]
                 elif N[i - 1][j - 1] == 1:
-                    a[0][jj-3:jj] =  TFN[3:6]
+                    a[0][jj-3:jj] = TFN[3:6]
                     a[0][jjj-3:jjj] = np.array([TFN[5]**-1, TFN[4]**-1, TFN[3]**-1])
                 elif N[i - 1][j - 1] == 2:
                     a[0][jj-3:jj] = TFN[6:9]
                     a[0][jjj-3:jjj] = np.array([TFN[8]**-1, TFN[7]**-1, TFN[6]**-1])
                 elif N[i - 1][j - 1] == 3:
-                    a[0][jj-3:jj] =  TFN[9:12]
+                    a[0][jj-3:jj] = TFN[9:12]
                     a[0][jjj-3:jjj] = np.array([TFN[11]**-1, TFN[10]**-1, TFN[9]**-1])
                 elif N[i - 1][j - 1] == 4:
-                    a[0][jj-3:jj] =  TFN[12:15]
+                    a[0][jj-3:jj] = TFN[12:15]
                     a[0][jjj-3:jjj] = np.array([TFN[14]**-1, TFN[13]**-1, TFN[12]**-1])
         # (2) fuzzy synthetic extension
-        A = np.zeros((n,3))
-        B = np.zeros((1,3))
+        A = np.zeros((n, 3))
+        B = np.zeros((1, 3))
         for i in range(1, n + 1):
             for j in range(1, n + 1):
                 jj = 3*(n*(i-1)+j)
@@ -123,7 +123,8 @@ def fahp(n, cols_criteri, df):
         for k in range(m_criteria):
             theta[0][k] = phi[k][0]/sumphi
             W[0][i] = W[0][i] + w[k][i]*theta[0][k]
-    W = (np.sum(W)**-1)*W # Final weights
+    # Final weights
+    W = (np.sum(W)**-1)*W
     W = W.T
-    df = df.assign(Weight = W)
+    df = df.assign(Weight=W)
     return df
