@@ -6,28 +6,37 @@ import numpy as np
 
 
 def comparison_matrix(df, cols):
-    Some_criteri = ['WHM importance', 'T Flammability',
-                    'T Instability', 'T Corrosivity']
     # Based on WMH
     m_criteria = 0
     n = df.shape[0]
     for col in cols:
         m_criteria = m_criteria + 1
         val = df[col].tolist()
+        if col in ['T_CORRELATION', 'COST']:
+            Best = min(val)
+            Worst = max(val)
+        else:
+            Best = max(val)
+            Worst = min(val)
         N_aux = np.empty((n, n))
         N_aux[:] = np.nan
         for i in range(n):
+            try:
+                score_i = (val[i] - Worst)/(Best - Worst)
+            except ZeroDivisionError:
+                score_i = 1
             for j in range(i, n):
-                diff = val[i] - val[j]
-                if col == 'Position database':
-                    diff = round(4*((diff - (n - 1))/(n - 1) + 1))
-                elif not col in Some_criteri:
-                    diff = round(4*(diff - 1) + 4)
+                try:
+                    score_j = (val[j] - Worst)/(Best - Worst)
+                except ZeroDivisionError:
+                    score_j = 1
+                diff = score_i - score_j
+                diff = round(4*(diff - 1) + 4)
                 N_aux[i][j] = diff
         if m_criteria == 1:
             N = N_aux
         else:
-            N =  np.concatenate((N, N_aux), axis = 0)
+            N = np.concatenate((N, N_aux), axis=0)
     return N
 
 
@@ -42,7 +51,7 @@ def fahp(n, cols_criteri, df):
     theta = np.zeros((1, m_criteria))  # criteria' uncertainty degrees
     sumphi = 0  # Initial value of diversification degree
     # Triangular fuzzy numbers (TFN)
-    # n is number of PCUs
+    # n is number of pathways
     # TFN is a vector with n segments and each one has 3 different numbers
     # The segments are the linguistic scales
     # The 3 differente numbers in the segments are a triangular fuzzy number (l,m,u)
