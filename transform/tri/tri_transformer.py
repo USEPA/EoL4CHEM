@@ -20,8 +20,10 @@ import time
 import math
 from merging import fuctions_rows_grouping
 sys.path.append(os.path.dirname(
-                os.path.realpath(__file__)) + '/../../extract/gps')
-from project_nominatim import NOMINATIM_API
+                os.path.realpath(__file__)) + '/../..')
+from extract.gps.project_nominatim import NOMINATIM_API
+from extract.gps.project_osrm import OSRM_API
+from ancillary.fahp.fahp import fahp
 pd.options.mode.chained_assignment = None
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -194,18 +196,84 @@ class TRI_EoL:
         else:
             return 5
 
-    def _estimating_relative_importance_for_pathways(self, df):
-        pass
+    def _estimating_relative_importance_for_pathways(self, R_chem_wm,
+                                                     R_send_receiv,
+                                                     Distances,
+                                                     df,
+                                                     Chemical_SRS_ID,
+                                                     Generator_lat,
+                                                     Generator_long):
+        # Merging distances
+        df = pd.merge(df, Distances,
+                      on=['SENDER FRS ID',
+                          'RECEIVER FRS ID'],
+                      how='inner')
+        # Calculating cost
+        df['COST'] = df.apply(lambda x:
+                              self._transport_cost(
+                                                   x['DISTANCE'],
+                                                   x['MARITIME FRACTION'],
+                                                   x['QUANTITY TRANSFERRED']),
+                              axis=1)
+        Dist_calculator = OSRM_API()
+        df['NEW_DISTANCE'] = df.apply(lambda x:
+                                      Dist_calculator.harvesine_formula(
+                                        Generator_lat,
+                                        Generator_long,
+                                        x['RECEIVER LATITUDE'],
+                                        x['RECEIVER LONGITUDE']
+                                      ),
+                                      axis=1)
+        # Checking the increase in the geographical distance between Generator
+        # and the facility which is receiving the waste
+        # Ensuring the receiver is further from the generator each time
+        df = df.loc[df['NEW_DISTANCE'] > df['OLD_DISTANCE']]
+        df['OLD_DISTANCE'] = df['NEW_DISTANCE']
+        # Merging relation sender-receiver
+        df = pd.merge(df, R_send_receiv,
+                      on=['SENDER FRS ID',
+                          'RECEIVER FRS ID'],
+                      how='inner')
+        df.rename(columns={'TIME': 'TIME_S_R'},
+                  inplace=True)
+        # Merging relation chemical-management
+        R_chem_wm = R_chem_wm.loc[
+                                  R_chem_wm['SRS INTERNAL TRACKING NUMBER']
+                                  == Chemical_SRS_ID
+                                  ]
+        R_chem_wm.drop(columns='SRS INTERNAL TRACKING NUMBER', inplace=True)
+        df = pd.merge(df, R_chem_wm,
+                      on='FOR WHAT IS TRANSFERRED',
+                      how='left')
+        df.rename(columns={'TIME': 'TIME_C_W'},
+                  inplace=True)
+        # Imputing a value for brokering
+        # The supply chain does want a lot intermediaries
+        try:
+            Min_value = round(0.5*df.loc[pd.notnull(df['TIME_C_W']), 'TIME_C_W'].min())
+        except ValueError:
+            Min_value = 0
+        df.loc[pd.isnull(df['TIME_C_W']), 'TIME_C_W'] = Min_value
+        # Temporal correlation
+        df['T_CORRELATION'] = df.apply(lambda x: self._temporal_correlation(
+                                                        x['Year_difference']),
+                                       axis=1)
+        columns_for_fahp = ['COST', 'TIME_C_W', 'TIME_C_W', 'T_CORRELATION']
+        n_pathways = df.shape[0]
+        if n_pathways > 1:
+            df = fahp(n_pathways, columns_for_fahp, df)
+        else:
+            df['Weight'] = 1.0
+        df.drop(columns=['COST', 'TIME_C_W', 'TIME_S_R', 'T_CORRELATION',
+                         'DISTANCE', 'MARITIME FRACTION', 'RECEIVER LATITUDE',
+                         'RECEIVER LONGITUDE', 'NEW_DISTANCE'],
+                inplace=True)
+        return df
 
     def _off_tracker(self, Management, Receiver_FRS_ID,
                      Chemical_SRS_ID, RCRA_ID, Track, df_WM, R_chem_wm,
-                     R_send_receiv, Distances, Generator_TRI_ID):
-        # Distances['COST'] = Distances.apply(lambda x:
-        #                                     self._transport_cost(
-        #                                             x['DISTANCE'],
-        #                                             x['MARITIME FRACTION'],
-        #                                             x['QUANTITY TRANSFERRED']),
-        #                                     axis=1)
+                     R_send_receiv, Distances, Generator_TRI_ID,
+                     Generator_lat, Generator_long, Old_distance):
         WM = list(df_WM.loc[df_WM['TRI Waste Management']
                             == Management.strip(),
                             'RCRA Waste Management'].unique())
@@ -279,11 +347,16 @@ class TRI_EoL:
                                     .Year_difference.idxmin()]
             Quantity.drop(columns=['REPORTING YEAR'], inplace=True)
         del Quantity_transferred, Track
+        # Ensuring the receiver is not the broker and the generator
         Source = Quantity.loc[Quantity['SENDER FRS ID'] == Receiver_FRS_ID]
         Source = Source.loc[(Source['RECEIVER FRS ID'] != Receiver_FRS_ID)
                             & (Source['RECEIVER TRIFID'] != Generator_TRI_ID)]
         n_broker = 1
         if not Source.empty:
+            Source['IDs_ON_PATHWAY'] = Source.apply(lambda x:
+                                                    [x['RECEIVER FRS ID']],
+                                                    axis=1)
+            Source['OLD_DISTANCE'] = Old_distance
             Source['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] =\
                 Source['QUANTITY TRANSFERRED']
             Source['RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] =\
@@ -292,9 +365,22 @@ class TRI_EoL:
                 Source.apply(lambda row: self._temporal_correlation(
                                                 row['Year_difference']),
                              axis=1)
-            Source.drop(columns=['QUANTITY TRANSFERRED', 'SENDER FRS ID',
-                                 'RELIABILITY', 'Year_difference'],
+            Source =\
+                Source.groupby(['SENDER FRS ID'], as_index=False)\
+                      .apply(lambda x:
+                             self._estimating_relative_importance_for_pathways(
+                                                         R_chem_wm,
+                                                         R_send_receiv,
+                                                         Distances,
+                                                         x,
+                                                         Chemical_SRS_ID,
+                                                         Generator_lat,
+                                                         Generator_long))
+            Source.drop(columns=['SENDER FRS ID', 'Year_difference',
+                                 'RELIABILITY', 'QUANTITY TRANSFERRED'],
                         inplace=True)
+            Source.rename(columns={'Weight': 'PATHWAY RELATIVE IMPORTANCE'},
+                          inplace=True)
             if Management == 'Transfer to waste broker for energy recovery':
                 Paths = Source.loc[~Source['FOR WHAT IS TRANSFERRED']
                                    .isin([Brokerage, Blending])]
@@ -309,15 +395,6 @@ class TRI_EoL:
                                   'RECEIVER TRIFID': 'RETDF TRIFID'},
                          inplace=True)
             Paths['NUMBER OF BROKERS'] = n_broker
-            #
-            # Paths =\
-            #     Paths.groupby(['SENDER FRS ID']).apply(lambda x:
-            #                                            self._estimating_relative_importance_for_pathways(
-            #                                             R_chem_wm,
-            #                                             R_send_receiv,
-            #                                             Distances,
-            #                                             self._temporal_correlation(x['Year_difference'])),
-            #                                            axis=1)
             while (not Source.empty) and (n_broker < 6):
                 n_broker = n_broker + 1
                 Source.drop(columns=['FOR WHAT IS TRANSFERRED',
@@ -327,8 +404,27 @@ class TRI_EoL:
                               inplace=True)
                 Source = pd.merge(Source, Quantity, how='inner',
                                   on='SENDER FRS ID')
-                Source.drop_duplicates(keep='first', inplace=True)
+                Source = Source.loc[Source.astype(str).drop_duplicates().index]
                 try:
+                    # Ensuring the receiver is not the broker and the generator
+                    Source = Source.loc[(Source['RECEIVER FRS ID'] != Receiver_FRS_ID)
+                                        & (Source['RECEIVER TRIFID'] != Generator_TRI_ID)]
+                    # Ensuring the receiver is not on the pathway
+                    Source =\
+                        Source.loc[
+                                   Source.apply(lambda x:
+                                                True if x['RECEIVER FRS ID']
+                                                not in x['IDs_ON_PATHWAY']
+                                                else False,
+                                                axis=1
+                                                )
+                                  ]
+                    Source['IDs_ON_PATHWAY'] =\
+                        Source.apply(lambda x:
+                                     x['IDs_ON_PATHWAY']
+                                     .append(
+                                       x['RECEIVER FRS ID']),
+                                     axis=1)
                     Source['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] =\
                         Source.apply(lambda row:
                                      min([row['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
@@ -344,9 +440,26 @@ class TRI_EoL:
                                      max([self._temporal_correlation(row['Year_difference']),
                                           row['TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY']]),
                                      axis=1)
+                    Source =\
+                        Source.groupby(['SENDER FRS ID'], as_index=False)\
+                              .apply(lambda x:
+                                     self._estimating_relative_importance_for_pathways(
+                                         R_chem_wm,
+                                         R_send_receiv,
+                                         Distances,
+                                         x,
+                                         Chemical_SRS_ID,
+                                         Generator_lat,
+                                         Generator_long))
+                    # Probability following the pathway
+                    Source['PATHWAY RELATIVE IMPORTANCE'] =\
+                        Source.apply(lambda x: x['PATHWAY RELATIVE IMPORTANCE']
+                                     * x['Weight'],
+                                     axis=1)
                     Source.drop(columns=['QUANTITY TRANSFERRED',
                                          'SENDER FRS ID', 'RELIABILITY',
-                                         'Year_difference'], inplace=True)
+                                         'Year_difference', 'Weight'],
+                                inplace=True)
                     if Management == 'Transfer to waste broker for energy recovery':
                         Paths_aux = Source.loc[~Source['FOR WHAT IS TRANSFERRED']
                                                .isin([Brokerage, Blending])]
@@ -362,13 +475,13 @@ class TRI_EoL:
                                                   'RECEIVER TRIFID': 'RETDF TRIFID'},
                                          inplace=True)
                         Paths_aux['NUMBER OF BROKERS'] = n_broker
-
-
                         Paths = pd.concat([Paths, Paths_aux],
                                           ignore_index=True, axis=0)
                 except ValueError:
                     n_broker = 6
-            Paths.drop_duplicates(keep='first', inplace=True)
+                except TypeError:
+                    n_broker = 6
+            Paths = Paths.loc[Paths.astype(str).drop_duplicates().index]
             Paths = Paths.loc[pd.notnull(Paths['RETDF TRIFID'])]
             Paths['WASTE MANAGEMENT UNDER TRI'] = Management
             Paths['RECEIVER FRS ID'] = Receiver_FRS_ID
@@ -382,8 +495,11 @@ class TRI_EoL:
                              on=['WASTE MANAGEMENT UNDER TRI',
                                  'FOR WHAT IS TRANSFERRED'])
             del df_WM_aux
-            Paths.drop(columns=['FOR WHAT IS TRANSFERRED'], inplace=True)
+            Paths.drop(columns=['FOR WHAT IS TRANSFERRED',
+                                'OLD_DISTANCE', 'IDs_ON_PATHWAY'],
+                       inplace=True)
             Paths.drop_duplicates(keep='first', inplace=True)
+            Paths = Paths.loc[Paths['PATHWAY RELATIVE IMPORTANCE'] != 0.0]
             return Paths
         else:
             return pd.DataFrame()
@@ -977,7 +1093,7 @@ class TRI_EoL:
                               sep='\t').iloc[:, 0].tolist()
         Columns = [col for col in Columns if col in No_broker.columns]
         No_broker = No_broker[Columns]
-        No_broker.to_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
+        No_broker.to_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
                          sep=',', index=False)
         del No_broker
         # ------------------------------- Brokers --------------------------#
@@ -990,7 +1106,6 @@ class TRI_EoL:
         for File in Files:
             df = pd.read_csv(Tracking_path + File,
                              usecols=['REPORTING YEAR', 'SENDER FRS ID',
-                                      'SENDER STATE', 'RECEIVER STATE',
                                       'SRS INTERNAL TRACKING NUMBER',
                                       'QUANTITY RECEIVED',
                                       'QUANTITY TRANSFERRED', 'RELIABILITY',
@@ -1011,7 +1126,6 @@ class TRI_EoL:
         for File in Files:
             df = pd.read_csv(Tracking_path + File,
                              usecols=['REPORTING YEAR', 'SENDER FRS ID',
-                                      'SENDER STATE', 'RECEIVER STATE',
                                       'SRS INTERNAL TRACKING NUMBER',
                                       'QUANTITY TRANSFERRED', 'RELIABILITY',
                                       'FOR WHAT IS TRANSFERRED',
@@ -1034,69 +1148,76 @@ class TRI_EoL:
         # The shortest distances
         Distances = pd.read_csv(Statistical_path + 'Tracking_distances.csv',
                                 usecols=['SENDER FRS ID', 'RECEIVER FRS ID',
-                                         'DISTANCE', 'MARITIME FRACTION'])
-        Path_saved = dict()
-        # for index, row in Broker.iterrows():
-        #     aux_tuple = tuple(row[['WASTE MANAGEMENT UNDER TRI',
-        #                            'RECEIVER FRS ID',
-        #                            'SRS CHEMICAL ID',
-        #                            'RCRAInfo CHEMICAL ID NUMBER']])
-        #     if aux_tuple not in Path_saved.keys():
-        #         Paths = self._off_tracker(row['WASTE MANAGEMENT UNDER TRI'],
-        #                                   row['RECEIVER FRS ID'],
-        #                                   row['SRS CHEMICAL ID'],
-        #                                   row['RCRAInfo CHEMICAL ID NUMBER'],
-        #                                   Track,
-        #                                   Management,
-        #                                   R_chem_wm,
-        #                                   R_send_receiv,
-        #                                   Distances,
-        #                                   row['GENERATOR TRIFID'])
-        #     else:
-        #         Paths = Path_saved[aux_tuple]
-        #     if not Paths.empty:
-        #         if aux_tuple not in Path_saved.keys():
-        #             Paths_aux = Paths.copy()
-        #             Path_saved.update({aux_tuple: Paths_aux})
-        #             del Paths_aux
-        #         df = pd.merge(row.to_frame().T, Paths, how='inner',
-        #                       on=['WASTE MANAGEMENT UNDER TRI',
-        #                           'RECEIVER FRS ID',
-        #                           'SRS CHEMICAL ID',
-        #                           'RCRAInfo CHEMICAL ID NUMBER'])
-        #         del Paths
-        #         df = pd.merge(df, df_TRI, how='inner',
-        #                       on=['TRI CHEMICAL ID NUMBER',
-        #                           'RETDF TRIFID'])
-        #         df.drop_duplicates(keep='first', inplace=True)
-        #         if not df.empty:
-        #             df['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
-        #                 df.apply(lambda x: min([x['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
-        #                                         x['TOTAL RELEASE FROM RETDF'],
-        #                                         x['QUANTITY TRANSFER OFF-SITE']]),
-        #                          axis=1)
-        #             df['RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
-        #                 df.apply(lambda x: max([x['RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
-        #                                                 x['RELIABILITY OF TOTAL RELEASE FROM RETDF'],
-        #                                                 x['RELIABILITY OF OFF-SITE TRANSFER']]),
-        #                          axis=1)
-        #             df['TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
-        #                 df.apply(lambda x:
-        #                          max([x['TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
-        #                               x['TEMPORAL CORRELATION OF RETDF']]),
-        #                          axis=1)
-        #             df = self._normalizing_naics(df)
-        #             df = df[Columns]
-        #             df.to_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
-        #                       sep=',', index=False, header=False, mode='a')
-        #             del df
-        #         else:
-        #             continue
-        #     else:
-        #         Paths_aux = Paths.copy()
-        #         Path_saved.update({aux_tuple: Paths_aux})
-        #         del Paths_aux, Paths
-        # del Track, Management, df_TRI
+                                         'DISTANCE', 'MARITIME FRACTION',
+                                         'RECEIVER LATITUDE',
+                                         'RECEIVER LONGITUDE'])
+        for index, row in Broker.iterrows():
+            Old_distance = 0.0
+            Paths = self._off_tracker(row['WASTE MANAGEMENT UNDER TRI'],
+                                      row['RECEIVER FRS ID'],
+                                      row['SRS CHEMICAL ID'],
+                                      row['RCRAInfo CHEMICAL ID NUMBER'],
+                                      Track,
+                                      Management,
+                                      R_chem_wm,
+                                      R_send_receiv,
+                                      Distances,
+                                      row['GENERATOR TRIFID'],
+                                      row['GENERATOR LATITUDE'],
+                                      row['GENERATOR LONGITUDE'],
+                                      Old_distance)
+            if not Paths.empty:
+                df = pd.merge(row.to_frame().T, Paths, how='inner',
+                              on=['WASTE MANAGEMENT UNDER TRI',
+                                  'RECEIVER FRS ID',
+                                  'SRS CHEMICAL ID',
+                                  'RCRAInfo CHEMICAL ID NUMBER'])
+                del Paths
+                df = pd.merge(df, df_TRI, how='inner',
+                              on=['TRI CHEMICAL ID NUMBER',
+                                  'RETDF TRIFID'])
+                df.drop_duplicates(keep='first', inplace=True)
+                if not df.empty:
+                    df['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
+                        df.apply(lambda x: min([x['MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
+                                                x['TOTAL RELEASE FROM RETDF'],
+                                                x['QUANTITY TRANSFER OFF-SITE']]),
+                                 axis=1)
+                    df['RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
+                        df.apply(lambda x: max([x['RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
+                                                        x['RELIABILITY OF TOTAL RELEASE FROM RETDF'],
+                                                        x['RELIABILITY OF OFF-SITE TRANSFER']]),
+                                 axis=1)
+                    df['TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'] = \
+                        df.apply(lambda x:
+                                 max([x['TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY'],
+                                      x['TEMPORAL CORRELATION OF RETDF']]),
+                                 axis=1)
+                    df = self._normalizing_naics(df)
+                    Columns = [col for col in Columns if col in df.columns]
+                    df.sort_values('RCRAInfo CHEMICAL ID NUMBER',
+                                          inplace=True,
+                                          ascending=False)
+                    df.drop_duplicates(subset=[col for col in Columns
+                                              if col != 'RCRAInfo CHEMICAL ID NUMBER'],
+                                              keep='first')
+                    df = df[Columns]
+                    df.to_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
+                              sep=',', index=False, header=False, mode='a')
+                    del df
+                else:
+                    continue
+        df = pd.read_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
+                         header=0, sep=',', low_memory=False)
+        df.sort_values('RCRAInfo CHEMICAL ID NUMBER',
+                       inplace=True,
+                       ascending=False)
+        df.drop_duplicates(subset=[col for col in Columns
+                           if col != 'RCRAInfo CHEMICAL ID NUMBER'],
+                           keep='first')
+        df = df[Columns]
+        df.to_csv(self._dir_path + f'/{self.year}/TRI_SRS_FRS_CompTox_RETDF_{self.year}_EoL.csv',
+                  sep=',', index=False)
 
 
 if __name__ == '__main__':
