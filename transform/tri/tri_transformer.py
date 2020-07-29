@@ -248,7 +248,7 @@ class TRI_EoL:
         df.rename(columns={'TIME': 'TIME_C_W'},
                   inplace=True)
         # Imputing a value for brokering
-        # The supply chain does want a lot intermediaries
+        # For a supply chain, having a lot intermediaries is not good
         try:
             Min_value = round(0.5*df.loc[pd.notnull(df['TIME_C_W']), 'TIME_C_W'].min())
         except ValueError:
