@@ -7,18 +7,18 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
 
 | Feature name | Type | Feature name | Type |
 | ------------- | ------------- | ------------- | ------------- |
-| REPORTING YEAR |	Integer | RECEIVER FRS ID	| Integer |
-| GENERATOR TRIFID	| Alphanumeric | RECEIVER TRIFID	| Alphanumeric |
-| GENERATOR NAME |	Alphanumeric | RECEIVER RCRAInfo ID	| Alphanumeric |
-| GENERATOR STREET |	Alphanumeric | RECEIVER NAME	| Alphanumeric |
-| GENERATOR CITY |	Alphanumeric | RECEIVER STREET	| Alphanumeric |
-| GENERATOR COUNTY |	Alphanumeric | RECEIVER CITY	| Alphanumeric |
-| GENERATOR STATE |	Alphanumeric | RECEIVER COUNTY	| Alphanumeric |
-| GENERATOR ZIP |	Integer | RECEIVER STATE	| Alphanumeric |
-| GENERATOR LATITUDE |	Float | RECEIVER ZIP	| Integer |
-| GENERATOR LONGITUDE |	Float | RECEIVER LATITUDE	| Float |
-| GENERATOR TRI PRIMARY NAICS CODE | Integer | RECEIVER LONGITUDE | Float |
-| GENERATOR TRI PRIMARY NAICS TITLE | Alphanumeric | PATHWAY RELATIVE IMPORTANCE | Float |
+| REPORTING YEAR |	Integer | RECEIVER TRIFID	| Alphanumeric |
+| GENERATOR TRIFID	| Alphanumeric | RECEIVER RCRAInfo ID	| Alphanumeric |
+| GENERATOR NAME |	Alphanumeric | RECEIVER NAME	| Alphanumeric |
+| GENERATOR STREET |	Alphanumeric | RECEIVER STREET	| Alphanumeric |
+| GENERATOR CITY |	Alphanumeric | RECEIVER CITY	| Alphanumeric |
+| GENERATOR COUNTY |	Alphanumeric | RECEIVER COUNTY	| Alphanumeric |
+| GENERATOR STATE |	Alphanumeric | RECEIVER STATE	| Alphanumeric |
+| GENERATOR ZIP |	Integer | RECEIVER ZIP	| Integer |
+| GENERATOR LATITUDE |	Float | RECEIVER LATITUDE	| Float |
+| GENERATOR LONGITUDE |	Float | RECEIVER LONGITUDE | Float |
+| GENERATOR TRI PRIMARY NAICS CODE | Integer | PATHWAY RELATIVE IMPORTANCE | Float |
+| GENERATOR TRI PRIMARY NAICS TITLE | Alphanumeric | NUMBER OF BROKERS | Integer |
 | SRS CHEMICAL ID | Integer | MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY | Float |
 | TRI CHEMICAL ID NUMBER | Alphanumeric | RELIABILITY OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY | Integer |
 | RCRAInfo CHEMICAL ID NUMBER | Alphanumeric | TEMPORAL CORRELATION OF MAXIMUM POSSIBLE FLOW FOLLOWING PATHWAY | Integer |
@@ -43,6 +43,7 @@ EoL4Chem is a code written in Python to track chemicals across different locatio
 | WASTE MANAGEMENT UNDER TRI | Alphanumeric | RELIABILITY OF FLOW TO COMPARTMENT FROM RETDF | Integer |
 | WASTE MANAGEMENT UNDER TSCA | Alphanumeric | TOTAL RELEASE FROM RETDF | Float |
 | WASTE MANAGEMENT UNDER EPA WMH | Alphanumeric | RELIABILITY OF TOTAL RELEASE FROM RETDF | Integer |
+| RECEIVER FRS ID	| Integer | | |
 
 # Pathways uncertainty
 
