@@ -1256,7 +1256,7 @@ if __name__ == '__main__':
                         help='Enter the number of cycles you want to run.',
                         type=int,
                         required=False,
-                        default=1)
+                        default=100)
 
 
     args = parser.parse_args()
