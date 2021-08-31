@@ -33,7 +33,6 @@ def stacked_barplot(df_markov_network, dir_path):
                                        values='percentage',
                                        index='RETDF Industry Sector',
                                        columns='Activity')
-    df_markov_network.to_csv(f'{dir_path}/stacked_barplot.csv')
     ax = df_markov_network.plot(kind='bar', stacked=True,
                                 legend=False)
     ax.legend(loc='center left', bbox_to_anchor=(0.45, 0.9), ncol=1)

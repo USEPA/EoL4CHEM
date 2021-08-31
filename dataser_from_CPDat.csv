@@ -1,0 +1,130 @@
+product_id,clean_min_wf,clean_central_wf,clean_max_wf,preferred_name,preferred_casrn,gen_cat,prod_fam,prod_type,description,wf_for_estimates,log_ratio
+306364,,0.1,,Butane,106-97-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.1,-1.0986122886681096
+306364,,0.3,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,0.0
+306364,0.0,,0.05,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-1.791759469228055
+306364,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-0.6931471805599453
+306364,,0.35,,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.35,0.15415067982725836
+309337,,0.1,,Butane,106-97-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.1,-1.0986122886681096
+309337,,0.35,,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.35,0.15415067982725836
+309337,,0.3,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,0.0
+309337,0.0,,0.05,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-1.791759469228055
+309337,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-0.6931471805599453
+312838,,0.1,,Butane,106-97-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.1,-1.0986122886681096
+312838,0.0,,0.05,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-1.791759469228055
+312838,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-0.6931471805599453
+312838,,0.35,,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.35,0.15415067982725836
+312838,,0.3,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,0.0
+357848,,0.08,,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.08,-0.48550781578170077
+357848,,0.13,,Acetone,67-64-1,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.13,0.0
+357848,,0.13,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.13,0.0
+357848,,0.0119,,Quartz-alpha (SiO2),14808-60-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.0119,-2.3909960503380985
+359215,,0.04,,Carbon dioxide,124-38-9,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.04,-1.504077396776274
+359215,,0.18,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.18,0.0
+359215,,0.73,,"1,1,1-Trichloroethane",71-55-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.73,1.4000876832522264
+364702,0.05,,0.1,Methylcyclohexane,108-87-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,-0.9808292530117261
+364702,0.1,,0.3,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+364702,0.1,,0.3,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+364702,0.3,,0.5,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.4,0.6931471805599453
+364702,0.1,,0.3,Heptane,142-82-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+364702,0.01,,0.05,Cyclohexane,110-82-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-1.8971199848858813
+364702,0.1,,0.3,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+364702,0.05,,0.1,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,-0.9808292530117261
+365098,,0.58,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.58,0.0
+365098,,0.2,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,-1.0647107369924282
+365098,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-1.3523928094442093
+365897,,0.2,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,-1.0647107369924282
+365897,,0.58,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.58,0.0
+365897,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-1.3523928094442093
+379454,0.05,,0.1,"Benzene, 1,3-diethenyl-, polymer with 1,3-butadiene and ethenylbenzene",26471-45-4,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+379454,0.01,,0.05,"1,3-Butadiene-styrene copolymer",9003-55-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-0.9162907318741551
+379454,0.1,,0.2,"Distillates (petroleum), steam-cracked, polymers with light steam-cracked petroleum naphtha",68410-16-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15000000000000002,0.6931471805599453
+379454,0.05,,0.1,"Benzene, 1,3-diethenyl-, polymer with 1,3-butadiene and ethenylbenzene",26471-45-4,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+379454,0.05,,0.1,"1,3-Butadiene-styrene copolymer",9003-55-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+379454,0.05,,0.1,"Resin acids and Rosin acids, esters with glycerol",8050-31-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+379454,0.05,,0.1,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+379454,0.2,,0.3,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.25,1.203972804325936
+379454,0.3,,0.4,Kaolin,1332-58-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.35,1.5404450409471488
+379454,0.01,,0.05,Calcium carbonate,471-34-1,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-0.9162907318741551
+379454,0.05,,0.1,"Distillates (petroleum), steam-cracked, polymers with light steam-cracked petroleum naphtha",68410-16-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+387433,,0.05,,Tetraethyl orthosilicate,78-10-4,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-2.8903717578961645
+387433,,0.9,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.9,0.0
+387994,,0.05,,Tetraethyl orthosilicate,78-10-4,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-2.8903717578961645
+387994,,0.9,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.9,0.0
+405493,0.1,,0.2,Dimethyl ether,115-10-6,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.15000000000000002,0.0
+405493,0.1,,0.2,Isobutane,75-28-5,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.15000000000000002,0.0
+405493,0.1,,0.2,Propane,74-98-6,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.15000000000000002,0.0
+405493,0.1,,0.2,Cyclohexane,110-82-7,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.15000000000000002,0.0
+405493,0.1,,0.2,n-Hexane,110-54-3,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.15000000000000002,0.0
+405867,,0.58,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.58,0.0
+405867,,0.2,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,-1.0647107369924282
+405867,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-1.3523928094442093
+411054,,0.05,,Tetraethyl orthosilicate,78-10-4,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.05,-2.8903717578961645
+411054,,0.9,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.9,0.0
+412977,,0.58,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.58,0.0
+412977,,0.2,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,-1.0647107369924282
+412977,,0.15,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,-1.3523928094442093
+419097,,0.32,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.32,0.0
+419097,,0.12,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.12,-0.9808292530117262
+419097,,0.32,,Heptane,142-82-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.32,0.0
+419097,,0.17,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.17,-0.6325225587435105
+426029,0.05,,0.1,"1,3-Butadiene-styrene copolymer",9003-55-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+426029,0.01,,0.05,"Distillates (petroleum), steam-cracked, polymers with light steam-cracked petroleum naphtha",68410-16-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-0.9162907318741551
+426029,0.05,,0.1,"Resin acids and Rosin acids, esters with glycerol",8050-31-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+426029,0.05,,0.1,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+426029,0.01,,0.05,Stoddard solvent,8052-41-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-0.9162907318741551
+426029,0.2,,0.3,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.25,1.203972804325936
+426029,0.3,,0.4,Kaolin,1332-58-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.35,1.5404450409471488
+426029,0.01,,0.05,Calcium carbonate,471-34-1,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-0.9162907318741551
+430455,,0.25,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.25,-0.5653138090500603
+430455,,0.44,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.44,0.0
+430455,,0.08,,Dichloromethane,75-09-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.08,-1.7047480922384253
+430828,,0.25,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.25,-0.4700036292457356
+430828,,0.06,,Dimethyl polysiloxane,63148-62-9,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.06,-1.8971199848858813
+430828,,0.4,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.4,0.0
+430828,,0.07,,Dichloromethane,75-09-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07,-1.7429693050586228
+430828,,0.22,,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.22,-0.5978370007556205
+432082,0.0,,0.5,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.5,0.17435338714477774
+432082,0.0,,0.5,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.5,0.17435338714477774
+432082,,0.42,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.42,0.0
+432082,,0.04,,Stoddard solvent IIC,64742-88-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.04,-2.3513752571634776
+432082,,0.04,,Dimethyl polysiloxane,63148-62-9,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.04,-2.3513752571634776
+433514,,0.1,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.1,-0.4054651081081643
+433514,,0.15,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15,0.0
+433514,,0.69,,"1,1,1-Trichloroethane",71-55-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.69,1.5260563034950492
+444668,0.3,,0.5,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.4,0.6931471805599453
+444668,0.1,,0.3,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+444668,0.1,,0.3,Heptane,142-82-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+444668,0.01,,0.05,Cyclohexane,110-82-7,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.030000000000000002,-1.8971199848858813
+444668,0.05,,0.1,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,-0.9808292530117261
+444668,0.1,,0.3,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+444668,0.1,,0.3,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.2,0.0
+444668,0.05,,0.1,Methylcyclohexane,108-87-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,-0.9808292530117261
+451885,0.0,,0.26,Propane,74-98-6,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.26,-0.1431008436406733
+451885,,0.27,,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.27,-0.10536051565782616
+451885,,0.3,,n-Hexane,110-54-3,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.3,0.0
+451885,,0.04,,Acetone,67-64-1,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.04,-2.0149030205422647
+451885,,0.04,,Toluene,108-88-3,home maintenance,adhesives and adhesive removers,multipurpose adhesive,"general purpose repair adhesives including all purpose glues, super glue, and epoxies; not including wood glues",0.04,-2.0149030205422647
+453191,0.7,,0.8,Isobutane,75-28-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.75,1.6094379124341003
+453191,0.01,,0.1,Dimethyl polysiloxane,63148-62-9,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.055,-1.0033021088637848
+453191,0.1,,0.2,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15000000000000002,0.0
+465667,,0.145,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.145,0.0
+465667,,0.008,,Zinc oxide,1314-13-2,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.008,-2.8972922007407385
+465667,,0.158,,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.158,0.08586129060639257
+465667,,0.145,,Acetone,67-64-1,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.145,0.0
+476340,0.25,,0.35,n-Hexane,110-54-3,personal care,nails,nail adhesive,adhesives for reparing fingernails or attaching artificial nails,0.3,0.0
+476340,0.1,,0.2,"1,3-Butadiene, homopolymer",9003-17-2,personal care,nails,nail adhesive,adhesives for reparing fingernails or attaching artificial nails,0.15000000000000002,-0.6931471805599451
+476340,0.2,,0.3,Calcium carbonate,471-34-1,personal care,nails,nail adhesive,adhesives for reparing fingernails or attaching artificial nails,0.25,-0.1823215567939546
+476340,,0.1,,Petroleum resins,64742-16-1,personal care,nails,nail adhesive,adhesives for reparing fingernails or attaching artificial nails,0.1,-1.0986122886681096
+476340,0.1,,0.2,Bentonite,1302-78-9,personal care,nails,nail adhesive,adhesives for reparing fingernails or attaching artificial nails,0.15000000000000002,-0.6931471805599451
+476799,,0.25,,Propane,74-98-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.25,-0.1823215567939546
+476799,,0.02,,Dimethyl polysiloxane,63148-62-9,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.02,-2.70805020110221
+476799,,0.04,,Stoddard solvent,8052-41-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.04,-2.0149030205422647
+476799,,0.06,,"1,1,1-Trichloroethane",71-55-6,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.06,-1.6094379124341003
+476799,,0.3,,Heptane,142-82-5,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,0.0
+476799,,0.3,,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,0.0
+503596,0.05,,0.15,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.1,-0.40546510810816444
+503596,0.01,,0.1,Isopropanol,67-63-0,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.055,-1.0033021088637848
+503596,0.1,,0.2,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.15000000000000002,0.0
+511633,0.05,,0.1,n-Hexane,110-54-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+511633,0.05,,0.1,Toluene,108-88-3,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.07500000000000001,0.0
+511633,0.25,,0.35,"Solvent naphtha, petroleum, light aliph.",64742-89-8,home maintenance,caulk/sealant,,liquid or gels designed to seal cracks or fill cracks and depressions on hard surfaces,0.3,1.3862943611198904
